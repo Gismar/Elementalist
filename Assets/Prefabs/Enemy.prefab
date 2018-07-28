@@ -112,12 +112,12 @@ Rigidbody2D:
   m_GameObject: {fileID: 1922259084083554}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 1
+  m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -161,10 +161,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MaxHealth: 0
   _CurrentHealth: 0
-  _Healthy: {r: 1, g: 0.67976373, b: 0, a: 1}
-  _Dead: {r: 0, g: 0, b: 0, a: 1}
+  _OriginalColor: {r: 0, g: 0, b: 0, a: 0}
   _Player: {fileID: 0}
   _Speed: 1
+  _RB: {fileID: 0}
 --- !u!212 &212493080643284350
 SpriteRenderer:
   m_ObjectHideFlags: 1

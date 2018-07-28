@@ -10,6 +10,11 @@ public static class WorldSettings {
     public static int PlayerMaxHealth = 10;
     public static float PlayerSpeed = 5f;
 
+    public static KeyCode Up = KeyCode.W;
+    public static KeyCode Down = KeyCode.S;
+    public static KeyCode Left = KeyCode.A;
+    public static KeyCode Right = KeyCode.D;
+
     public static int Points = 0;
 
     public enum Stats

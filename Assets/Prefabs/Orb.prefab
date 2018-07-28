@@ -135,15 +135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Collider: {fileID: 0}
-  _Player: {fileID: 0}
   _Anim: {fileID: 0}
-  _Moved: 0
-  _Speed: 10
-  _Offset: {x: 0, y: 0}
-  _IdleTimer: 0
-  _IdleTimerLerp: 0
-  _Damage: 0
   _Distance: 0
+  _AimLine: {fileID: 0}
+  _Mask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!120 &120566345419487226
 LineRenderer:
   m_ObjectHideFlags: 1

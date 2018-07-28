@@ -86,7 +86,7 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: UpdateBoxCollider
-    data: 2,1,4
+    data: 0,1,4
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
@@ -112,10 +112,24 @@ AnimationClip:
     floatParameter: 1
     intParameter: 0
     messageOptions: 0
+  - time: 0.3
+    functionName: ResetCollider
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.35
     functionName: Move
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 1.5
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.35
+    functionName: CanAttack
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
