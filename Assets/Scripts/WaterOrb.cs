@@ -7,7 +7,6 @@ public class WaterOrb : OrbBehaviour, IOrb {
 
     [SerializeField] private BoxCollider2D _Collider;
     [SerializeField] private Animator _Anim;
-    [SerializeField] private float _Distance;
     [SerializeField] private LineRenderer _AimLine;
     [SerializeField] private LayerMask _Mask;
 
@@ -18,21 +17,30 @@ public class WaterOrb : OrbBehaviour, IOrb {
 	void Start () {
         _Collider = GetComponent<BoxCollider2D>();
         _Anim = GetComponent<Animator>();
-        transform.localScale = WorldSettings.OrbSize;
+        transform.localScale = _WorldInfo.OrbSize;
         _Orb = this;
         _AimLine = GetComponent<LineRenderer>();
 	}
 
-    public void Setup(Vector2 offset, Transform player)
+    public void Setup(Vector2 offset, Transform player, WorldInformation worldInfo)
     {
         _Player = player;
         _Offset = offset;
+        _WorldInfo = worldInfo;
+    }
+
+    public void SetIdle()
+    {
+        Damage = 1;
+        _BeganAim = false;
+        _IsAttacking = false;
+        _AimLine.enabled = false;
     }
 
     public void MainAttack()
     {
         GetComponent<LineRenderer>().enabled = false;
-        Damage = Mathf.FloorToInt((2 + _Distance * 5) * WorldSettings.OrbDamage);
+        Damage = Mathf.FloorToInt(2 * _WorldInfo.OrbDamage);
         transform.position += transform.up * 1.5f;
         ResetCollider();
         _Anim.SetTrigger("Move");
@@ -40,8 +48,8 @@ public class WaterOrb : OrbBehaviour, IOrb {
 
     public void SecondaryAttack()
     {
-        GetComponent<LineRenderer>().enabled = false;
-        Damage = Mathf.RoundToInt(2 * WorldSettings.OrbDamage);
+        _AimLine.enabled = false;
+        Damage = Mathf.RoundToInt(2 * _WorldInfo.OrbDamage);
         ResetCollider();
         _Anim.SetTrigger("Pull");
         var enemiesHit = Physics2D.OverlapCircleAll(transform.position, 2f, _Mask);
@@ -53,17 +61,15 @@ public class WaterOrb : OrbBehaviour, IOrb {
 
     public void ActivateAimLine()
     {
-        _Distance = 1.5f;
         _AimLine.enabled = true;
-        //_AimLine.SetPosition(1, new Vector3(0, _Distance * 5 / WorldSettings.OrbSize.x, 0));
+        _AimLine.SetPosition(1, new Vector3(0, _WorldInfo.OrbDistance * 5 / _WorldInfo.OrbSize.x, 0));
         _BeganAim = true;
     }
 
     public void UpdateAimLine()
     {
         if (!_BeganAim) ActivateAimLine();
-        //_Distance = Mathf.Clamp(_Distance + Time.deltaTime * WorldSettings.ChargeRate, 0.5f, 3f);
-        _AimLine.SetPosition(1, new Vector3(0, _Distance * 5 / WorldSettings.OrbSize.x, 0));
+        _AimLine.SetPosition(1, new Vector3(0, _WorldInfo.OrbDistance * 5 / _WorldInfo.OrbSize.x, 0));
     }
 
     private void ResetCollider()
@@ -81,7 +87,7 @@ public class WaterOrb : OrbBehaviour, IOrb {
 
     public void Move(float gap)
     {
-        transform.position += transform.up * gap * _Distance;
+        transform.position += transform.up * gap * _WorldInfo.OrbDistance;
     }
 
     public void CanAttack()

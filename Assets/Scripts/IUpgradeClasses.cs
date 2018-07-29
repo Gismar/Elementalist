@@ -2,178 +2,194 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUpgradeClasses {
+public interface IUpgradeable {
     bool CanBuy();
     bool IsMaxLevel();
+    void SetWorldInfo(WorldInformation worldInfo);
     int Upgrade();
+
     int Cost { get; }
-    string Value { get; }
+    string Format { get; }
+    int CurrentLevel { get; }
+    int MaxLevel { get; }
 }
 
-public class OrbDamage : IUpgradeClasses
+public class OrbDamage : IUpgradeable
 {
-    private readonly int _MaxLevel = 10;
-    private int _CurrentLevel = 0;
-
     public int Cost { get; private set; } = 200;
-    public string Value { get { return WorldSettings.OrbDamage.ToString("0.0x"); } }
+    public string Format { get { return _WorldInfo.OrbDamage.ToString("0.0x"); } }
+    public int CurrentLevel { get; private set; } = 0;
+    public int MaxLevel { get; private set; } = 10;
 
-    public bool IsMaxLevel()
+    public WorldInformation _WorldInfo;
+    public void SetWorldInfo(WorldInformation worldInfo)
     {
-        return (_CurrentLevel == _MaxLevel);
+        _WorldInfo = worldInfo;
     }
-
     public bool CanBuy()
     {
-        return (WorldSettings.Points >= Cost);
+        return (_WorldInfo.Points >= Cost);
     }
-
+    public bool IsMaxLevel()
+    {
+        return (CurrentLevel == MaxLevel);
+    }
     public int Upgrade()
     {
         var initalCost = Cost;
-        WorldSettings.OrbDamage += 0.5f;
+        _WorldInfo.OrbDamage += 0.5f;
         Cost *= 2;
-        _CurrentLevel++;
+        CurrentLevel++;
         return initalCost;
     }
 }
 
-public class OrbDelay : IUpgradeClasses
+public class OrbDelay : IUpgradeable
 {
-    private readonly int _MaxLevel = 4;
-    private int _CurrentLevel = 0;
-
+    public int MaxLevel { get; private set; } = 4;
+    public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 400;
-    public string Value { get { return WorldSettings.OrbDelay.ToString("0s"); } }
+    public string Format { get { return _WorldInfo.OrbDelay.ToString("0s"); } }
+    public WorldInformation _WorldInfo;
 
-    public bool IsMaxLevel()
+    public void SetWorldInfo(WorldInformation worldInfo)
     {
-        return (_CurrentLevel == _MaxLevel);
+        _WorldInfo = worldInfo;
     }
-
     public bool CanBuy()
     {
-        return (WorldSettings.Points >= Cost);
+        return (_WorldInfo.Points >= Cost);
     }
-
+    public bool IsMaxLevel()
+    {
+        return (CurrentLevel == MaxLevel);
+    }
     public int Upgrade()
     {
         var initalCost = Cost;
-        WorldSettings.OrbDelay -= 5f;
+        _WorldInfo.OrbDelay -= 5f;
         Cost *= 2;
-        _CurrentLevel++;
+        CurrentLevel++;
         return initalCost;
     }
 }
 
-public class OrbSize : IUpgradeClasses
+public class OrbSize : IUpgradeable
 {
-    private readonly int _MaxLevel = 4;
-    private int _CurrentLevel = 0;
-
+    public int MaxLevel { get; private set; } = 4;
+    public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 350;
-    public string Value { get { return WorldSettings.OrbSize.x.ToString("0.00x"); } }
+    public string Format { get { return _WorldInfo.OrbSize.ToString("0.00x"); } }
+    public WorldInformation _WorldInfo;
 
-    public bool IsMaxLevel()
+    public void SetWorldInfo(WorldInformation worldInfo)
     {
-        return (_CurrentLevel == _MaxLevel);
+        _WorldInfo = worldInfo;
     }
-
     public bool CanBuy()
     {
-        return (WorldSettings.Points >= Cost);
+        return (_WorldInfo.Points >= Cost);
     }
-
+    public bool IsMaxLevel()
+    {
+        return (CurrentLevel == MaxLevel);
+    }
     public int Upgrade()
     {
         var initalCost = Cost;
-        WorldSettings.OrbSize += new Vector2(0.25f, 0.25f);
+        _WorldInfo.OrbSize += new Vector2(0.25f, 0.25f);
         Cost *= 2;
-        _CurrentLevel++;
+        CurrentLevel++;
         return initalCost;
     }
 }
 
-public class ChargeRate : IUpgradeClasses
+public class OrbDistance : IUpgradeable
 {
-    private readonly int _MaxLevel = 5;
-    private int _CurrentLevel = 0;
-
+    public int MaxLevel { get; private set; } = 4;
+    public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 400;
-    public string Value { get { return WorldSettings.ChargeRate.ToString("0.0x"); } }
+    public string Format { get { return _WorldInfo.OrbDistance.ToString("0.0"); } }
+    public WorldInformation _WorldInfo;
 
-    public bool IsMaxLevel()
+    public void SetWorldInfo(WorldInformation worldInfo)
     {
-        return (_CurrentLevel == _MaxLevel);
+        _WorldInfo = worldInfo;
     }
-
     public bool CanBuy()
     {
-        return (WorldSettings.Points >= Cost);
+        return (_WorldInfo.Points >= Cost);
     }
-
+    public bool IsMaxLevel()
+    {
+        return (CurrentLevel == MaxLevel);
+    }
     public int Upgrade()
     {
         var initalCost = Cost;
-        WorldSettings.ChargeRate += 0.5f;
+        _WorldInfo.OrbDistance += 0.25f;
         Cost *= 2;
-        _CurrentLevel++;
+        CurrentLevel++;
         return initalCost;
     }
 }
 
-public class PlayerSpeed : IUpgradeClasses
+public class PlayerSpeed : IUpgradeable
 {
-    private readonly int _MaxLevel = 10;
-    private int _CurrentLevel = 0;
-
+    public int MaxLevel { get; private set; } = 10;
+    public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 100;
-    public string Value { get { return WorldSettings.PlayerSpeed.ToString("0m/s"); } }
+    public string Format { get { return _WorldInfo.PlayerSpeed.ToString("0m/s"); } }
+    public WorldInformation _WorldInfo;
 
-    public bool IsMaxLevel()
+    public void SetWorldInfo(WorldInformation worldInfo)
     {
-        return (_CurrentLevel == _MaxLevel);
+        _WorldInfo = worldInfo;
     }
-
     public bool CanBuy()
     {
-        return (WorldSettings.Points >= Cost);
+        return (_WorldInfo.Points >= Cost);
     }
-
+    public bool IsMaxLevel()
+    {
+        return (CurrentLevel == MaxLevel);
+    }
     public int Upgrade()
     {
         var initalCost = Cost;
-        WorldSettings.PlayerSpeed += 1;
+        _WorldInfo.PlayerSpeed += 1;
         Cost *= 2;
-        _CurrentLevel++;
+        CurrentLevel++;
         return initalCost;
     }
 }
 
-public class PlayerMaxHealth : IUpgradeClasses
+public class PlayerMaxHealth : IUpgradeable
 {
-    private readonly int _MaxLevel = 10;
-    private int _CurrentLevel = 0;
-
+    public int MaxLevel { get; private set; } = 10;
+    public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 150;
-    public string Value { get { return WorldSettings.PlayerMaxHealth.ToString(); } }
+    public string Format { get { return _WorldInfo.PlayerMaxHealth.ToString(""); } }
+    public WorldInformation _WorldInfo;
 
-    public bool IsMaxLevel()
+    public void SetWorldInfo(WorldInformation worldInfo)
     {
-        return (_CurrentLevel == _MaxLevel);
+        _WorldInfo = worldInfo;
     }
-
     public bool CanBuy()
     {
-        return (WorldSettings.Points >= Cost);
+        return (_WorldInfo.Points >= Cost);
     }
-
+    public bool IsMaxLevel()
+    {
+        return (CurrentLevel == MaxLevel);
+    }
     public int Upgrade()
     {
         var initalCost = Cost;
-        WorldSettings.PlayerMaxHealth += 2;
+        _WorldInfo.PlayerMaxHealth += 2;
         Cost *= 2;
-        _CurrentLevel++;
+        CurrentLevel++;
         return initalCost;
     }
 }

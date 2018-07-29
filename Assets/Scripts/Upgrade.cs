@@ -8,28 +8,30 @@ public class Upgrade : MonoBehaviour {
     [SerializeField] private Text _UpgradeValue;
     [SerializeField] private Text _UpgradeCost;
     [SerializeField] private Button _UpgradeButton;
-    [SerializeField] private WorldSettings.Stats _Stat;
+    [SerializeField] private WorldInformation _WorldInfo;
+    [SerializeField] private WorldInformation.Stats _Stat;
 
     private void Start()
     {
+        _WorldInfo.StatDictionary[_Stat].SetWorldInfo(_WorldInfo);
         UpdateText();
     }
 
     public void UpgradeStats()
     {
-        if (WorldSettings.StatDictionary[_Stat].CanBuy() && !WorldSettings.StatDictionary[_Stat].IsMaxLevel())
+        if (_WorldInfo.StatDictionary[_Stat].CanBuy() && !_WorldInfo.StatDictionary[_Stat].IsMaxLevel())
         {
-            WorldSettings.UsePoints(WorldSettings.StatDictionary[_Stat].Upgrade());
+            _WorldInfo.UsePoints(_WorldInfo.StatDictionary[_Stat].Upgrade());
             UpdateText();
-            if (WorldSettings.StatDictionary[_Stat].IsMaxLevel())
+            if (_WorldInfo.StatDictionary[_Stat].IsMaxLevel())
                 DeactivateButton();
         }
     }
 
     private void UpdateText()
     {
-        _UpgradeValue.text = WorldSettings.StatDictionary[_Stat].Value;
-        _UpgradeCost.text = WorldSettings.StatDictionary[_Stat].Cost.ToString("0 Ps");
+        _UpgradeValue.text = _WorldInfo.StatDictionary[_Stat].Format;
+        _UpgradeCost.text = _WorldInfo.StatDictionary[_Stat].Cost.ToString("0 Ps");
     }
 
     private void DeactivateButton()

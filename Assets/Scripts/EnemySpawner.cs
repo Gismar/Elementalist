@@ -14,6 +14,7 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private float _MultiplierTimer;
     [SerializeField] private float _Time;
     [SerializeField] private Gradient _Color;
+    [SerializeField] private WorldInformation _WorldInfo;
     // Use this for initialization
     void Start () {
         _Time = 0;
@@ -28,7 +29,7 @@ public class EnemySpawner : MonoBehaviour {
         _Time = Mathf.Floor(Time.timeSinceLevelLoad / 10f) * 10f;
         if (_SpawnTimer < Time.timeSinceLevelLoad) {
             SpawnEnemy();
-            _SpawnDelay = 1 / Mathf.Log(_Time * _Multiplier + 10, 100f);
+            _SpawnDelay = 1 / Mathf.Log(Mathf.Pow(_Time + 10, 2), 100f);
             _SpawnTimer = Time.timeSinceLevelLoad + _SpawnDelay;
         }
         if(_MultiplierTimer <= _Time)
@@ -48,8 +49,8 @@ public class EnemySpawner : MonoBehaviour {
             position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0);
         }
         temp.transform.position = position;
-        temp.GetComponent<EnemyBehaviour>().SetUp(Mathf.Log(_Time + 100,100F) * _Multiplier,
-            _Player, Mathf.FloorToInt(Mathf.Pow(Mathf.Log10(_Time + 5) * _Multiplier,2)), 
-            _Color.Evaluate(_Time % 100 / 100f));
+        temp.GetComponent<EnemyBehaviour>().SetUp(Mathf.Log(_Time + 100, 100F) * _Multiplier,
+            _Player, Mathf.FloorToInt(Mathf.Pow(Mathf.Log10(_Time + 10) * _Multiplier + 1f, 2)), 
+            _Color.Evaluate(_Time % 100 / 100f), _WorldInfo);
     }
 }

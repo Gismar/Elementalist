@@ -164,9 +164,9 @@ MonoBehaviour:
   - {fileID: 1277388165171216, guid: f8129f558d7dbba41b17846df38e827f, type: 2}
   _Timer: 0
   _MaxHealth: 10
-  _CurrentHealth: 0
-  _HealthBar: {fileID: 0}
   _Map: {fileID: 0}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
+  _CurrentHealth: 0
 --- !u!212 &212623501176496160
 SpriteRenderer:
   m_ObjectHideFlags: 1

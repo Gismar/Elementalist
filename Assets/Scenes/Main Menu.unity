@@ -692,12 +692,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'WASD -> To Move
 
-    Left Click -> Aim and Charge
+    Left Click -> Aim
 
     Right Click -> Special Attack
-
-
-    Charging increase Damage and Range
 
 
     Survive for as long as you can!'

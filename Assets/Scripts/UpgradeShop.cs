@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 public class UpgradeShop : MonoBehaviour {
 
     [SerializeField] private Text _Points;
+    [SerializeField] private WorldInformation _WorldInfo;
 	void Update () {
-        _Points.text = WorldSettings.Points.ToString("0 Ps");
+        _Points.text = _WorldInfo.Points.ToString("0 Ps");
 	}
 
     public void ExitToMainMenu()

@@ -3,34 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class OrbBehaviour : MonoBehaviour {
-    private bool _IsIdle = false;
     protected bool _IsAttacking = false;
     protected bool _BeganAim = false;
-    private bool _CanUseSecondary = true;
-    private float _IdleTimer;
-    private float _IdleTimerLerp;
-    private float _SecondaryAttackTimer;
-
+    protected WorldInformation _WorldInfo;
     protected IOrb _Orb;
     protected Vector2 _Offset;
     protected Transform _Player;
-	
-	void Update () {
+
+    private bool _IsIdle = true;
+    private bool _CanUseSecondary = false;
+    private bool _Return;
+    private float _IdleTimerLerp;
+    private float _SecondaryAttackTimer;
+
+    private void Start() => _SecondaryAttackTimer = Time.time + _Orb.SecondaryAttackDelay;  
+
+    void Update () {
         if (_IsIdle)
         {
             transform.position = new Vector2(_Player.position.x + Mathf.Cos(Time.time + _Offset.x) * transform.localScale.x,
                                             _Player.position.y + Mathf.Sin(Time.time + _Offset.y) * transform.localScale.y);
         }
-        else
+        if (_Return)
         {
-            if (_IdleTimer < Time.time)
-            {
-                transform.position = Vector3.Lerp(transform.position, _Player.position, _IdleTimerLerp);
-                _IdleTimerLerp += Time.deltaTime / Vector3.Distance(transform.position, _Player.position);
-            }
+            transform.position = Vector3.Lerp(transform.position, _Player.position, _IdleTimerLerp);
+            _IdleTimerLerp += Time.deltaTime / Vector3.Distance(transform.position, _Player.position);
             if (_IdleTimerLerp >= 1)
             {
                 _IsIdle = true;
+                _Return = false;
             }
         }
 
@@ -41,23 +42,29 @@ public class OrbBehaviour : MonoBehaviour {
         }
 
         if (_IsAttacking) return;
+
+        if (Input.GetKeyDown(_WorldInfo.Recall) && !_IsIdle)
+        {
+            _Return = true;
+            _Orb.SetIdle();
+            _IdleTimerLerp = 0;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             _Orb.ActivateAimLine();
             _IsIdle = false;
-            SetUpIdleTimer();
+            _Return = false;
         }
 
         if (Input.GetMouseButton(0))
         {
             transform.rotation = Quaternion.Euler(0, 0, Aim());
             _Orb.UpdateAimLine();
-            SetUpIdleTimer();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            SetUpIdleTimer();
             _IsAttacking = true;
             _BeganAim = false;
             _Orb.MainAttack();
@@ -65,7 +72,6 @@ public class OrbBehaviour : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(1) && _CanUseSecondary)
         {
-            SetUpIdleTimer();
             SetUpSecondaryAttackTimer();
             _IsAttacking = true;
             _Orb.SecondaryAttack();
@@ -76,12 +82,6 @@ public class OrbBehaviour : MonoBehaviour {
     {
         _SecondaryAttackTimer = Time.time + _Orb.SecondaryAttackDelay;
         _CanUseSecondary = false;
-    }
-
-    private void SetUpIdleTimer()
-    {
-        _IdleTimer = Time.time + _Orb.IdleDelay;
-        _IdleTimerLerp = 0;
     }
 
     private float Aim()

@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IOrb {
     void MainAttack();
     void SecondaryAttack();
+    void SetIdle();
     void ActivateAimLine();
     void UpdateAimLine();
 

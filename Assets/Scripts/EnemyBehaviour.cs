@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour {
 
-    [SerializeField] private float _MaxHealth;
-    [SerializeField] private float _CurrentHealth;
-    [SerializeField] private Color _OriginalColor;
-    [SerializeField] private Transform _Player;
-    [SerializeField] private float _Speed;
-    [SerializeField] private Rigidbody2D _RB;
-
+    private float _MaxHealth;
+    private float _CurrentHealth;
+    private Color _OriginalColor;
+    private Transform _Player;
+    private float _Speed;
+    private Rigidbody2D _RB;
+    private WorldInformation _WorldInfo;
     private void Start() => _RB = GetComponent<Rigidbody2D>();
 
     private void Update()
@@ -22,7 +22,7 @@ public class EnemyBehaviour : MonoBehaviour {
         _RB.velocity = _RB.velocity.magnitude >= 0.1f ? _RB.velocity * 0.9f : Vector2.zero;
     }
 
-    public void SetUp(float speed, Transform player, int maxHealth, Color color)
+    public void SetUp(float speed, Transform player, int maxHealth, Color color, WorldInformation worldInfo)
     {
         _Speed = speed;
         _Player = player;
@@ -30,6 +30,7 @@ public class EnemyBehaviour : MonoBehaviour {
         _CurrentHealth = _MaxHealth;
         _OriginalColor = color;
         GetComponent<SpriteRenderer>().color = color;
+        _WorldInfo = worldInfo;
     }
 
     public void TakeDamage(int dmg)
@@ -38,7 +39,7 @@ public class EnemyBehaviour : MonoBehaviour {
         GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, _OriginalColor, _CurrentHealth / _MaxHealth);
         if (_CurrentHealth <= 0)
         {
-            WorldSettings.Points += 10;
+            _WorldInfo.Points += 10;
             Destroy(transform.gameObject);
         }
     }

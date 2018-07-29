@@ -394,6 +394,7 @@ MonoBehaviour:
   _UpgradeValue: {fileID: 313000694}
   _UpgradeCost: {fileID: 568859748}
   _UpgradeButton: {fileID: 1291819734}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
   _Stat: 4
 --- !u!114 &119151913
 MonoBehaviour:
@@ -440,7 +441,7 @@ GameObject:
   - component: {fileID: 179120133}
   - component: {fileID: 179120132}
   m_Layer: 5
-  m_Name: Orb Size Text
+  m_Name: Skill Description Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -496,7 +497,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Orb Charge Rate Mutliplier
+  m_Text: Orb Distance
 --- !u!222 &179120133
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -666,7 +667,7 @@ GameObject:
   - component: {fileID: 347302067}
   - component: {fileID: 347302066}
   m_Layer: 5
-  m_Name: Orb Delay Button
+  m_Name: Upgrade Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -939,7 +940,7 @@ GameObject:
   - component: {fileID: 518685592}
   - component: {fileID: 518685591}
   m_Layer: 5
-  m_Name: Orb Damage Button
+  m_Name: Upgrade Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1361,7 +1362,7 @@ GameObject:
   - component: {fileID: 764894419}
   - component: {fileID: 764894418}
   m_Layer: 5
-  m_Name: Orb Size Text
+  m_Name: Skill Description Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1888,7 +1889,7 @@ GameObject:
   - component: {fileID: 906381468}
   - component: {fileID: 906381467}
   m_Layer: 5
-  m_Name: Orb Size Button
+  m_Name: Upgrade Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2279,6 +2280,7 @@ MonoBehaviour:
   _UpgradeValue: {fileID: 2100170200}
   _UpgradeCost: {fileID: 1426627429}
   _UpgradeButton: {fileID: 906381467}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
   _Stat: 3
 --- !u!114 &1020598661
 MonoBehaviour:
@@ -2326,7 +2328,7 @@ GameObject:
   - component: {fileID: 1021827986}
   - component: {fileID: 1021827985}
   m_Layer: 5
-  m_Name: Player Speed Button
+  m_Name: Upgrade Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2554,6 +2556,7 @@ MonoBehaviour:
   _UpgradeValue: {fileID: 391698397}
   _UpgradeCost: {fileID: 64345900}
   _UpgradeButton: {fileID: 347302066}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
   _Stat: 2
 --- !u!114 &1133861173
 MonoBehaviour:
@@ -2675,7 +2678,7 @@ GameObject:
   - component: {fileID: 1226083792}
   - component: {fileID: 1226083791}
   m_Layer: 5
-  m_Name: Player Speed Text
+  m_Name: Skill Description Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2901,7 +2904,7 @@ GameObject:
   - component: {fileID: 1291819735}
   - component: {fileID: 1291819734}
   m_Layer: 5
-  m_Name: Player Health Button
+  m_Name: Upgrade Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3064,6 +3067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Points: {fileID: 1450903837}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
 --- !u!114 &1361949898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3619,6 +3623,7 @@ MonoBehaviour:
   _UpgradeValue: {fileID: 1018869442}
   _UpgradeCost: {fileID: 1427057052}
   _UpgradeButton: {fileID: 518685591}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
   _Stat: 1
 --- !u!114 &1560846660
 MonoBehaviour:
@@ -3741,7 +3746,7 @@ GameObject:
   - component: {fileID: 1710143056}
   - component: {fileID: 1710143055}
   m_Layer: 5
-  m_Name: Charge Rate Button
+  m_Name: Upgrade Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3863,7 +3868,7 @@ GameObject:
   - component: {fileID: 1727012514}
   - component: {fileID: 1727012513}
   m_Layer: 5
-  m_Name: Player Health Text
+  m_Name: Skill Description Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3938,7 +3943,7 @@ GameObject:
   - component: {fileID: 1859436360}
   - component: {fileID: 1859436359}
   m_Layer: 5
-  m_Name: Orb Respawn Text
+  m_Name: Skill Description Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4088,7 +4093,7 @@ GameObject:
   - component: {fileID: 1902576913}
   - component: {fileID: 1902576912}
   m_Layer: 5
-  m_Name: Orb Damage Text
+  m_Name: Skill Description Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4282,6 +4287,7 @@ MonoBehaviour:
   _UpgradeValue: {fileID: 868519909}
   _UpgradeCost: {fileID: 18219357}
   _UpgradeButton: {fileID: 1021827985}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
   _Stat: 5
 --- !u!114 &2025417045
 MonoBehaviour:
@@ -4329,7 +4335,7 @@ GameObject:
   - component: {fileID: 2040148633}
   - component: {fileID: 2040148632}
   m_Layer: 5
-  m_Name: Charge Rate
+  m_Name: Orb Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4372,6 +4378,7 @@ MonoBehaviour:
   _UpgradeValue: {fileID: 1189336038}
   _UpgradeCost: {fileID: 850935696}
   _UpgradeButton: {fileID: 1710143055}
+  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
   _Stat: 0
 --- !u!114 &2040148633
 MonoBehaviour:
