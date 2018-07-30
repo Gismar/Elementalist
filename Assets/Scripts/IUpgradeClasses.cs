@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IUpgradeable {
     bool CanBuy();
     bool IsMaxLevel();
-    void SetWorldInfo(WorldInformation worldInfo);
+    void SetWorldInfo(GlobalDataHandler worldInfo);
     int Upgrade();
 
     int Cost { get; }
@@ -21,8 +21,8 @@ public class OrbDamage : IUpgradeable
     public int CurrentLevel { get; private set; } = 0;
     public int MaxLevel { get; private set; } = 10;
 
-    public WorldInformation _WorldInfo;
-    public void SetWorldInfo(WorldInformation worldInfo)
+    public GlobalDataHandler _WorldInfo;
+    public void SetWorldInfo(GlobalDataHandler worldInfo)
     {
         _WorldInfo = worldInfo;
     }
@@ -50,9 +50,9 @@ public class OrbDelay : IUpgradeable
     public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 400;
     public string Format { get { return _WorldInfo.OrbDelay.ToString("0s"); } }
-    public WorldInformation _WorldInfo;
+    public GlobalDataHandler _WorldInfo;
 
-    public void SetWorldInfo(WorldInformation worldInfo)
+    public void SetWorldInfo(GlobalDataHandler worldInfo)
     {
         _WorldInfo = worldInfo;
     }
@@ -80,9 +80,9 @@ public class OrbSize : IUpgradeable
     public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 350;
     public string Format { get { return _WorldInfo.OrbSize.ToString("0.00x"); } }
-    public WorldInformation _WorldInfo;
+    public GlobalDataHandler _WorldInfo;
 
-    public void SetWorldInfo(WorldInformation worldInfo)
+    public void SetWorldInfo(GlobalDataHandler worldInfo)
     {
         _WorldInfo = worldInfo;
     }
@@ -110,9 +110,9 @@ public class OrbDistance : IUpgradeable
     public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 400;
     public string Format { get { return _WorldInfo.OrbDistance.ToString("0.0"); } }
-    public WorldInformation _WorldInfo;
+    public GlobalDataHandler _WorldInfo;
 
-    public void SetWorldInfo(WorldInformation worldInfo)
+    public void SetWorldInfo(GlobalDataHandler worldInfo)
     {
         _WorldInfo = worldInfo;
     }
@@ -140,9 +140,9 @@ public class PlayerSpeed : IUpgradeable
     public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 100;
     public string Format { get { return _WorldInfo.PlayerSpeed.ToString("0m/s"); } }
-    public WorldInformation _WorldInfo;
+    public GlobalDataHandler _WorldInfo;
 
-    public void SetWorldInfo(WorldInformation worldInfo)
+    public void SetWorldInfo(GlobalDataHandler worldInfo)
     {
         _WorldInfo = worldInfo;
     }
@@ -170,9 +170,9 @@ public class PlayerMaxHealth : IUpgradeable
     public int CurrentLevel { get; private set; } = 0;
     public int Cost { get; private set; } = 150;
     public string Format { get { return _WorldInfo.PlayerMaxHealth.ToString(""); } }
-    public WorldInformation _WorldInfo;
+    public GlobalDataHandler _WorldInfo;
 
-    public void SetWorldInfo(WorldInformation worldInfo)
+    public void SetWorldInfo(GlobalDataHandler worldInfo)
     {
         _WorldInfo = worldInfo;
     }

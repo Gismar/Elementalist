@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WorldInformation", menuName = "WorldInformation")]
-public class WorldInformation : ScriptableObject {
+public class WorldInformation : MonoBehaviour {
     public float OrbDelay = 30f;
     public Vector2 OrbSize = new Vector2(1,1);
     public float OrbDamage = 1f;

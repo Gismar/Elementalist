@@ -14,9 +14,11 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private float _MultiplierTimer;
     [SerializeField] private float _Time;
     [SerializeField] private Gradient _Color;
-    [SerializeField] private WorldInformation _WorldInfo;
+    private GlobalDataHandler _GlobalData;
+
     // Use this for initialization
     void Start () {
+        _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
         _Time = 0;
         _Map.CompressBounds();
         _SpawnTimer = _Time + 1;
@@ -51,6 +53,6 @@ public class EnemySpawner : MonoBehaviour {
         temp.transform.position = position;
         temp.GetComponent<EnemyBehaviour>().SetUp(Mathf.Log(_Time + 100, 100F) * _Multiplier,
             _Player, Mathf.FloorToInt(Mathf.Pow(Mathf.Log10(_Time + 10) * _Multiplier + 1f, 2)), 
-            _Color.Evaluate(_Time % 100 / 100f), _WorldInfo);
+            _Color.Evaluate(_Time % 100 / 100f), _GlobalData);
     }
 }

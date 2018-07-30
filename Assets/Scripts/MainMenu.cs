@@ -4,24 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
-    
 
-    public void PlayGame()
+    public void Start()
     {
-        StartCoroutine(LoadScene("Level 1"));
+        Debug.Log(GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>());
     }
 
-    public void UpgradeShop()
+    public void LoadScene(string sceneName)
     {
-        StartCoroutine(LoadScene("Upgrade Shop"));
-    }
-
-    private IEnumerator LoadScene(string sceneName)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
+        SceneManager.LoadScene(sceneName);
     }
 }

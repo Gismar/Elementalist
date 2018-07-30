@@ -5,10 +5,10 @@ using UnityEngine;
 public class OrbBehaviour : MonoBehaviour {
     protected bool _IsAttacking = false;
     protected bool _BeganAim = false;
-    protected WorldInformation _WorldInfo;
     protected IOrb _Orb;
     protected Vector2 _Offset;
     protected Transform _Player;
+    protected GlobalDataHandler _GlobalData;
 
     private bool _IsIdle = true;
     private bool _CanUseSecondary = false;
@@ -43,7 +43,7 @@ public class OrbBehaviour : MonoBehaviour {
 
         if (_IsAttacking) return;
 
-        if (Input.GetKeyDown(_WorldInfo.Recall) && !_IsIdle)
+        if (Input.GetKeyDown(_GlobalData.Recall) && !_IsIdle)
         {
             _Return = true;
             _Orb.SetIdle();

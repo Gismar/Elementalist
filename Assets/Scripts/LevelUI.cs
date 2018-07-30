@@ -13,22 +13,24 @@ public class LevelUI : MonoBehaviour {
     [SerializeField] private float _PointTimer;
     [SerializeField] private GameObject _GameOver;
     [SerializeField] private Text _GameOverTimer;
-    [SerializeField] private WorldInformation _WorldSettings;
+    private GlobalDataHandler _GlobalData;
     private bool _Dead = false;
 
-	void Update () {
+    private void Start() => _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+
+    void Update () {
         if (_Dead) return;
         if(_Player._CurrentHealth == 0)
         {
-            if(Time.timeSinceLevelLoad > _WorldSettings.HighestTime)
+            if(Time.timeSinceLevelLoad > _GlobalData.HighestTime)
             {
-                _WorldSettings.HighestTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
+                _GlobalData.HighestTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
             }
             _GameOver.SetActive(true);
             _GameOverTimer.text = FormatTime();
             _Dead = true;
         }
-        _Points.text = _WorldSettings.Points.ToString("0 Ps");
+        _Points.text = _GlobalData.Points.ToString("0 Ps");
         _Timer.text = FormatTime();
         _Health.text = _Player._CurrentHealth.ToString("HP: 0");
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -37,13 +39,14 @@ public class LevelUI : MonoBehaviour {
         }
         if (_PointTimer < Time.time)
         {
-            _WorldSettings.Points += 1;
+            _GlobalData.Points += 1;
             _PointTimer = Time.time + 1;
         }
 	}
 
     public void GoToMainMenu()
     {
+
         StartCoroutine(LoadScene());
     }
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a77c6bed7e1bc064f8f3906c330744d4, type: 3}
   m_Name: WorldInformationScriptable
-  m_EditorClassIdentifier: Assembly-CSharp::WorldInformation
+  m_EditorClassIdentifier: 
   OrbDelay: 30
   OrbSize: {x: 1, y: 1}
   OrbDamage: 1

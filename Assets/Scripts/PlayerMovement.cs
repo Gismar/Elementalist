@@ -10,17 +10,18 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float _Timer;
     [SerializeField] private int _MaxHealth;
     [SerializeField] private Tilemap _Map;
-    [SerializeField] private WorldInformation _WorldInfo;
+    private GlobalDataHandler _GlobalData;
     public int _CurrentHealth;
     private float _OrbCount;
     private float _IframeTimer;
 	// Use this for initialization
 	void Start () {
-        _MaxHealth = _WorldInfo.PlayerMaxHealth;
+        _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+        _MaxHealth = _GlobalData.PlayerMaxHealth;
         _CurrentHealth = _MaxHealth;
         CreateNewOrb();
-        _Speed = _WorldInfo.PlayerSpeed;
-        _Timer = Time.time + _WorldInfo.OrbDelay;
+        _Speed = _GlobalData.PlayerSpeed;
+        _Timer = Time.time + _GlobalData.OrbDelay;
 	}
 	
 	void Update () {
@@ -30,10 +31,10 @@ public class PlayerMovement : MonoBehaviour {
         float moveX = 0;
         float moveY = 0;
 
-        if (Input.GetKey(_WorldInfo.Right)) moveX = IsXInMap(1f * Time.deltaTime * _Speed);
-        if (Input.GetKey(_WorldInfo.Left)) moveX = IsXInMap(-1f * Time.deltaTime * _Speed);
-        if (Input.GetKey(_WorldInfo.Up)) moveY = IsYInMap(1f * Time.deltaTime * _Speed);
-        if (Input.GetKey(_WorldInfo.Down)) moveY = IsYInMap(-1f * Time.deltaTime * _Speed);
+        if (Input.GetKey(_GlobalData.Right)) moveX = IsXInMap(1f * Time.deltaTime * _Speed);
+        if (Input.GetKey(_GlobalData.Left)) moveX = IsXInMap(-1f * Time.deltaTime * _Speed);
+        if (Input.GetKey(_GlobalData.Up)) moveY = IsYInMap(1f * Time.deltaTime * _Speed);
+        if (Input.GetKey(_GlobalData.Down)) moveY = IsYInMap(-1f * Time.deltaTime * _Speed);
 
         transform.Translate(new Vector3(moveX,moveY), Space.World);
         if (_IframeTimer < Time.time) GetComponent<SpriteRenderer>().color = Color.black;
@@ -41,7 +42,7 @@ public class PlayerMovement : MonoBehaviour {
         if(Time.time > _Timer)
         {
             CreateNewOrb();
-            _Timer = Time.time + _WorldInfo.OrbDelay;
+            _Timer = Time.time + _GlobalData.OrbDelay;
             _CurrentHealth++;
         }
     }
@@ -62,7 +63,7 @@ public class PlayerMovement : MonoBehaviour {
         var temp = Instantiate(_Orbs[Random.Range(0, _Orbs.Length)]);
         var randomOffset = _OrbCount/2.5f * Mathf.PI;
         temp.transform.position = transform.position;
-        temp.GetComponent<WaterOrb>().Setup(new Vector2(randomOffset, randomOffset), transform, _WorldInfo);
+        temp.GetComponent<WaterOrb>().Setup(new Vector2(randomOffset, randomOffset), transform, _GlobalData);
     }
 
     public void TakeDamage(int dmg)

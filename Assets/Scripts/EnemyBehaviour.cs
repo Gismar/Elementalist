@@ -10,7 +10,7 @@ public class EnemyBehaviour : MonoBehaviour {
     private Transform _Player;
     private float _Speed;
     private Rigidbody2D _RB;
-    private WorldInformation _WorldInfo;
+    private GlobalDataHandler _GlobalData;
     private void Start() => _RB = GetComponent<Rigidbody2D>();
 
     private void Update()
@@ -22,7 +22,7 @@ public class EnemyBehaviour : MonoBehaviour {
         _RB.velocity = _RB.velocity.magnitude >= 0.1f ? _RB.velocity * 0.9f : Vector2.zero;
     }
 
-    public void SetUp(float speed, Transform player, int maxHealth, Color color, WorldInformation worldInfo)
+    public void SetUp(float speed, Transform player, int maxHealth, Color color, GlobalDataHandler worldInfo)
     {
         _Speed = speed;
         _Player = player;
@@ -30,7 +30,7 @@ public class EnemyBehaviour : MonoBehaviour {
         _CurrentHealth = _MaxHealth;
         _OriginalColor = color;
         GetComponent<SpriteRenderer>().color = color;
-        _WorldInfo = worldInfo;
+        _GlobalData = worldInfo;
     }
 
     public void TakeDamage(int dmg)
@@ -39,7 +39,7 @@ public class EnemyBehaviour : MonoBehaviour {
         GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, _OriginalColor, _CurrentHealth / _MaxHealth);
         if (_CurrentHealth <= 0)
         {
-            _WorldInfo.Points += 10;
+            _GlobalData.Points += 10;
             Destroy(transform.gameObject);
         }
     }
