@@ -405,7 +405,6 @@ MonoBehaviour:
   _PointTimer: 0
   _GameOver: {fileID: 1099225956}
   _GameOverTimer: {fileID: 512929531}
-  _WorldSettings: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
 --- !u!1 &167905168
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +545,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
 --- !u!4 &232524566
 Transform:
   m_ObjectHideFlags: 0

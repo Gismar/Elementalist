@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] private float _Speed;
-    [SerializeField] private GameObject[] _Orbs;
+    [SerializeField] public GameObject[] Orbs;
     [SerializeField] private float _Timer;
     [SerializeField] private int _MaxHealth;
     [SerializeField] private Tilemap _Map;
@@ -60,10 +60,10 @@ public class PlayerMovement : MonoBehaviour {
     void CreateNewOrb()
     {
         _OrbCount++;
-        var temp = Instantiate(_Orbs[Random.Range(0, _Orbs.Length)]);
+        var temp = Instantiate(Orbs[0]);
         var randomOffset = _OrbCount/2.5f * Mathf.PI;
         temp.transform.position = transform.position;
-        temp.GetComponent<WaterOrb>().Setup(new Vector2(randomOffset, randomOffset), transform, _GlobalData);
+        temp.GetComponent<IOrb>().Setup(new Vector2(randomOffset, randomOffset), transform, _GlobalData, true, new float[4], new float[4], 0);
     }
 
     public void TakeDamage(int dmg)

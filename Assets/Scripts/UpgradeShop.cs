@@ -12,6 +12,7 @@ public class UpgradeShop : MonoBehaviour {
     void Start() => _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
 
 	void Update () {
+        _Points.text = _GlobalData.Points.ToString("0 Ps");
 	}
 
     public void ExitToMainMenu()

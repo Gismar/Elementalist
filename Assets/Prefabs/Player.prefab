@@ -160,12 +160,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Speed: 5
-  _Orbs:
+  Orbs:
   - {fileID: 1277388165171216, guid: f8129f558d7dbba41b17846df38e827f, type: 2}
+  - {fileID: 1087300279624624, guid: e9be88a9b169978479cc7c9ae3cbabb7, type: 2}
   _Timer: 0
   _MaxHealth: 10
   _Map: {fileID: 0}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
   _CurrentHealth: 0
 --- !u!212 &212623501176496160
 SpriteRenderer:

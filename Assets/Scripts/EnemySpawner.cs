@@ -51,8 +51,8 @@ public class EnemySpawner : MonoBehaviour {
             position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0);
         }
         temp.transform.position = position;
-        temp.GetComponent<EnemyBehaviour>().SetUp(Mathf.Log(_Time + 100, 100F) * _Multiplier,
-            _Player, Mathf.FloorToInt(Mathf.Pow(Mathf.Log10(_Time + 10) * _Multiplier + 1f, 2)), 
-            _Color.Evaluate(_Time % 100 / 100f), _GlobalData);
+        temp.GetComponent<EnemyBehaviour>().SetUp(Mathf.Log(_Time + 100, 100F) * _Multiplier, //speed
+            _Player, Mathf.FloorToInt(Mathf.Pow(Mathf.Log10(_Time + 10) * _Multiplier + 1f, 2) * 10), //health
+            _Color.Evaluate(_Time % 100 / 100f), _GlobalData); //color
     }
 }

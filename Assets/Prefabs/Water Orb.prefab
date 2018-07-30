@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 50722880634944048}
   - component: {fileID: 120566345419487226}
   m_Layer: 12
-  m_Name: Orb
+  m_Name: Water Orb
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Collider: {fileID: 0}
   _Anim: {fileID: 0}
-  _Distance: 0
   _AimLine: {fileID: 0}
   _Mask:
     serializedVersion: 2

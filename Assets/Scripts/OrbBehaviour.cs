@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class OrbBehaviour : MonoBehaviour {
-    protected bool _IsAttacking = false;
-    protected bool _BeganAim = false;
     protected IOrb _Orb;
     protected Vector2 _Offset;
     protected Transform _Player;
     protected GlobalDataHandler _GlobalData;
+    protected bool _IsAttacking = false;
+    protected bool _BeganAim = false;
+    protected bool _IsIdle = true;
+    protected float[] _MainAttackTimers;
+    protected float[] _SecondaryAttackTimers;
+    protected int _OrbType;
 
-    private bool _IsIdle = true;
-    private bool _CanUseSecondary = false;
     private bool _Return;
+    private bool _CanUseMainAttack = false;
+    private bool _CanUseSecondary = false;
     private float _IdleTimerLerp;
+    private float _MainAttackTimer;
     private float _SecondaryAttackTimer;
 
-    private void Start() => _SecondaryAttackTimer = Time.time + _Orb.SecondaryAttackDelay;  
+    protected void Startup()
+    {
+        _SecondaryAttackTimer = _SecondaryAttackTimers[_OrbType];
+        _MainAttackTimer = _MainAttackTimers[_OrbType];
+    }
 
     void Update () {
         if (_IsIdle)
@@ -41,7 +50,18 @@ public class OrbBehaviour : MonoBehaviour {
             transform.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, new Color(0.7f, 0.7f, 0.7f, 0.7f), (_SecondaryAttackTimer - Time.time) / _Orb.SecondaryAttackDelay);
         }
 
+        if (!_CanUseMainAttack)
+        {
+            _CanUseMainAttack = _MainAttackTimer <= Time.time;
+        }
+
         if (_IsAttacking) return;
+
+        if (Input.GetKeyDown(_GlobalData.Swap))
+        {
+            _OrbType = _OrbType + 1 == 2 ? 0 : _OrbType + 1;
+            _Orb.Swap(_OrbType);
+        }
 
         if (Input.GetKeyDown(_GlobalData.Recall) && !_IsIdle)
         {
@@ -49,6 +69,15 @@ public class OrbBehaviour : MonoBehaviour {
             _Orb.SetIdle();
             _IdleTimerLerp = 0;
         }
+
+        if (Input.GetMouseButtonDown(1) && _CanUseSecondary)
+        {
+            SetUpSecondaryAttackTimer();
+            _IsAttacking = true;
+            _Orb.SecondaryAttack();
+        }
+
+        if (!_CanUseMainAttack) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -59,7 +88,6 @@ public class OrbBehaviour : MonoBehaviour {
 
         if (Input.GetMouseButton(0))
         {
-            transform.rotation = Quaternion.Euler(0, 0, Aim());
             _Orb.UpdateAimLine();
         }
 
@@ -68,27 +96,37 @@ public class OrbBehaviour : MonoBehaviour {
             _IsAttacking = true;
             _BeganAim = false;
             _Orb.MainAttack();
+            SetUpMainAttackTimer();
         }
 
-        if (Input.GetMouseButtonDown(1) && _CanUseSecondary)
-        {
-            SetUpSecondaryAttackTimer();
-            _IsAttacking = true;
-            _Orb.SecondaryAttack();
-        }
+    }
+
+    private void SetUpMainAttackTimer()
+    {
+        _MainAttackTimer = Time.time + _Orb.MainAttackDelay;
+        _MainAttackTimers[_OrbType] = _MainAttackTimer;
+        _CanUseMainAttack = false;
     }
 
     private void SetUpSecondaryAttackTimer()
     {
         _SecondaryAttackTimer = Time.time + _Orb.SecondaryAttackDelay;
+        _SecondaryAttackTimers[_OrbType] = _SecondaryAttackTimer;
         _CanUseSecondary = false;
     }
 
-    private float Aim()
+    protected float MouseAngle()
     {
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var direction = (mousePos - transform.position).normalized;
         var rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
         return rotation;
+    }
+
+    protected float MouseDistance()
+    {
+        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var distance = Vector3.Distance(mousePos, transform.position);
+        return distance;
     }
 }

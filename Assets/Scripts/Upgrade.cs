@@ -8,30 +8,31 @@ public class Upgrade : MonoBehaviour {
     [SerializeField] private Text _UpgradeValue;
     [SerializeField] private Text _UpgradeCost;
     [SerializeField] private Button _UpgradeButton;
-    [SerializeField] private WorldInformation _WorldInfo;
-    [SerializeField] private WorldInformation.Stats _Stat;
+    [SerializeField] private GlobalDataHandler.Stats _Stat;
+    private GlobalDataHandler _GlobalData;
 
     private void Start()
     {
-        _WorldInfo.StatDictionary[_Stat].SetWorldInfo(_WorldInfo);
+        _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+        _GlobalData.StatDictionary[_Stat].SetWorldInfo(_GlobalData);
         UpdateText();
     }
 
     public void UpgradeStats()
     {
-        if (_WorldInfo.StatDictionary[_Stat].CanBuy() && !_WorldInfo.StatDictionary[_Stat].IsMaxLevel())
+        if (_GlobalData.StatDictionary[_Stat].CanBuy() && !_GlobalData.StatDictionary[_Stat].IsMaxLevel())
         {
-            _WorldInfo.UsePoints(_WorldInfo.StatDictionary[_Stat].Upgrade());
+            _GlobalData.UsePoints(_GlobalData.StatDictionary[_Stat].Upgrade());
             UpdateText();
-            if (_WorldInfo.StatDictionary[_Stat].IsMaxLevel())
+            if (_GlobalData.StatDictionary[_Stat].IsMaxLevel())
                 DeactivateButton();
         }
     }
 
     private void UpdateText()
     {
-        _UpgradeValue.text = _WorldInfo.StatDictionary[_Stat].Format;
-        _UpgradeCost.text = _WorldInfo.StatDictionary[_Stat].Cost.ToString("0 Ps");
+        _UpgradeValue.text = _GlobalData.StatDictionary[_Stat].Format;
+        _UpgradeCost.text = _GlobalData.StatDictionary[_Stat].Cost.ToString("0 Ps");
     }
 
     private void DeactivateButton()

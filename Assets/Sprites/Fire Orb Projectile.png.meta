@@ -1,14 +1,18 @@
 fileFormatVersion: 2
-guid: ef4d0bd5557099b42a9a2c26e29768df
+guid: e3c34d514824d55458537c905ef93f21
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Fire Obr Idle_0
-    21300002: Fire Obr Idle_1
-    21300004: Fire Obr Idle_2
-    21300006: Fire Obr Idle_3
-    21300008: Fire Obr Idle_4
-    21300010: Fire Obr Idle_5
-    21300012: Fire Obr Idle_6
+    21300000: Fire Orb Projectile_0
+    21300002: Fire Orb Projectile_1
+    21300004: Fire Orb Projectile_2
+    21300006: Fire Orb Projectile_3
+    21300008: Fire Orb Projectile_4
+    21300010: Fire Orb Projectile_5
+    21300012: Fire Orb Projectile_6
+    21300014: Fire Orb Projectile_7
+    21300016: Fire Orb Projectile_8
+    21300018: Fire Orb Projectile_9
+    21300020: Fire Orb Projectile_10
   externalObjects: {}
   serializedVersion: 6
   mipmaps:
@@ -48,11 +52,11 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 0
-  spriteMeshType: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -102,7 +106,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Fire Obr Idle_0
+      name: Fire Orb Projectile_0
       rect:
         serializedVersion: 2
         x: 1
@@ -110,19 +114,19 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e90cc50b504feae4780e6565694a05d3
+      spriteID: 45028c94b6e30f2469f63e2657e373af
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fire Obr Idle_1
+      name: Fire Orb Projectile_1
       rect:
         serializedVersion: 2
         x: 34
@@ -130,19 +134,19 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e16eb5984f659d04ab7cbb843a3a40db
+      spriteID: c98326d7d28ab894e9fa7ba9bbf792b4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fire Obr Idle_2
+      name: Fire Orb Projectile_2
       rect:
         serializedVersion: 2
         x: 67
@@ -150,19 +154,19 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a755b90ef266c349875615a8ee35e34
+      spriteID: 5e85a90970d0ab44abae2e82f07d4dc5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fire Obr Idle_3
+      name: Fire Orb Projectile_3
       rect:
         serializedVersion: 2
         x: 100
@@ -170,19 +174,19 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7f89c84e5aad2184b81df42dd7f2377d
+      spriteID: 43919ce4fb4135948b004be2318d00f7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fire Obr Idle_4
+      name: Fire Orb Projectile_4
       rect:
         serializedVersion: 2
         x: 133
@@ -190,19 +194,19 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 320acd1b7a58b534992763018fdbfaff
+      spriteID: 6ac144a96d9773341bfab2170db44be4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fire Obr Idle_5
+      name: Fire Orb Projectile_5
       rect:
         serializedVersion: 2
         x: 166
@@ -210,19 +214,19 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 085a48a7d6566a84fa47d7c0c9c9fd4f
+      spriteID: af3a352b52dd70940b6fb8cfd37cfe09
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fire Obr Idle_6
+      name: Fire Orb Projectile_6
       rect:
         serializedVersion: 2
         x: 199
@@ -230,13 +234,93 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c5bd83b0029836343a5233e23c799599
+      spriteID: d8ddb77f6ef0fe945a37e89634f708af
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire Orb Projectile_7
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 1
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d03cea8407bcd6f46b68899d22d54a7f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire Orb Projectile_8
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 1
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91eb2f29f6e933844a08f36786f6b415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire Orb Projectile_9
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 1
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a480cad538adfc4782fcbb91beca57a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire Orb Projectile_10
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 1
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bb897f427a16014e95ece90f580b630
       vertices: []
       indices: 
       edges: []
@@ -244,7 +328,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: c0d9fd02a3001a8408459bc66d36c342
+    spriteID: 832e5deb44d18734796267515fd66c2d
     vertices: []
     indices: 
     edges: []
