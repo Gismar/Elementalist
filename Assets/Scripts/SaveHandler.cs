@@ -10,14 +10,14 @@ public class SaveHandler {
     public void SaveGame()
     {
         ClearFile();
-        StreamWriter writer = new StreamWriter("Assets/Resources/Save.txt");
+        StreamWriter writer = new StreamWriter("Assets/Save.txt");
         writer.Write(EncodeToBase64(JsonUtility.ToJson(_WorldInfo)));
         writer.Close();
     }
 
     public void LoadGame()
     {
-        StreamReader reader = new StreamReader("Assets/Resources/Save.txt");
+        StreamReader reader = new StreamReader("Assets/Save.txt");
         string line = DecodeFromBase64(reader.ReadLine());
         //JsonUtility.FromJsonOverwrite(line, _WorldInfo);
         _WorldInfo = JsonUtility.FromJson<WorldInformation>(line);
@@ -26,7 +26,7 @@ public class SaveHandler {
 
     public void ClearFile()
     {
-        File.WriteAllText("Assets/Resources/Save.txt", string.Empty);
+        File.WriteAllText("Assets/Save.txt", string.Empty);
     }
 
 	public string EncodeToBase64(string message)
