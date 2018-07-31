@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Fireball : MonoBehaviour {
 
-    private int _Damage;
+    private float _Damage;
     private float _Duration;
 
-    public void Setup(int damage, float duration)
+    public void Setup(float damage, float duration)
     {
         _Damage = damage;
         _Duration = duration + Time.time;

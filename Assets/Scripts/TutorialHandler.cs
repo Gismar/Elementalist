@@ -21,23 +21,28 @@ public class TutorialHandler : MonoBehaviour {
 
     public void ChangeUpKey()
     {
-        _GlobalData.Up = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[0].text.ToUpper());
+        _Inputs[0].text = _Inputs[0].text.ToUpper();
+        _GlobalData.Up = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[0].text);
     }
     public void ChangeDownKey()
     {
-        _GlobalData.Down = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[1].text.ToUpper());
+        _Inputs[1].text = _Inputs[1].text.ToUpper();
+        _GlobalData.Down = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[1].text);
     }
     public void ChangeLeftKey()
     {
-        _GlobalData.Left = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[2].text.ToUpper());
+        _Inputs[2].text = _Inputs[2].text.ToUpper();
+        _GlobalData.Left = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[2].text);
     }
     public void ChangeRightKey()
     {
-        _GlobalData.Right = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[3].text.ToUpper());
+        _Inputs[3].text = _Inputs[3].text.ToUpper();
+        _GlobalData.Right = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[3].text);
     }
     public void ChangeSwapKey()
     {
-        _GlobalData.Swap = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[5].text.ToUpper());
+        _Inputs[4].text = _Inputs[4].text.ToUpper();
+        _GlobalData.Swap = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[4].text);
     }
 
     public void LoadScene(string name)

@@ -11,7 +11,7 @@ public interface IOrb {
     void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType);
     void Swap(int orb);
 
-    int Damage { get; }
+    float Damage { get; }
     float IdleDelay { get; }
     float MainAttackDelay { get; }
     float SecondaryAttackDelay { get; }

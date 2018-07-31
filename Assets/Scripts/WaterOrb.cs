@@ -8,22 +8,25 @@ public class WaterOrb : OrbBehaviour, IOrb {
     [SerializeField] private BoxCollider2D _Collider;
     [SerializeField] private Animator _Anim;
     [SerializeField] private LineRenderer _AimLine;
-    [SerializeField] private LayerMask _Mask;
+    [SerializeField] private LayerMask[] _Mask;
+    private Rigidbody2D _RB;
     private float _Distance;
 
-    public int Damage { get; private set; }
+    public float Damage { get; private set; }
     public float IdleDelay { get; private set; } = 3f;
-    public float MainAttackDelay { get; private set; } = 1f;
+    public float MainAttackDelay { get; private set; } = 0.5f;
     public float SecondaryAttackDelay { get; private set; } = 2f;
 
 	void Start () {
         _Collider = GetComponent<BoxCollider2D>();
+        _RB = GetComponent<Rigidbody2D>();
         _Anim = GetComponent<Animator>();
         transform.localScale = _GlobalData.OrbSize;
         _Orb = this;
         _AimLine = GetComponent<LineRenderer>();
 	}
 
+    #region //Main Functionality
     public void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType)
     {
         _Player = player;
@@ -48,8 +51,9 @@ public class WaterOrb : OrbBehaviour, IOrb {
     public void MainAttack()
     {
         GetComponent<LineRenderer>().enabled = false;
-        Damage = Mathf.FloorToInt(20 * _GlobalData.OrbDamage);
-        transform.position += transform.up * 1.5f;
+        Damage = 20 * _GlobalData.OrbDamage;
+        transform.position += transform.up;
+        _Distance -= 1f;
         ResetCollider();
         _Anim.SetTrigger("Move");
     }
@@ -57,13 +61,14 @@ public class WaterOrb : OrbBehaviour, IOrb {
     public void SecondaryAttack()
     {
         _AimLine.enabled = false;
-        Damage = Mathf.RoundToInt(40 * _GlobalData.OrbDamage);
+        Damage = 40 * _GlobalData.OrbDamage;
         ResetCollider();
         _Anim.SetTrigger("Pull");
-        var enemiesHit = Physics2D.OverlapCircleAll(transform.position, 2f, _Mask);
+        var enemiesHit = Physics2D.OverlapCircleAll(transform.position, 2f * _GlobalData.OrbSize.x, _Mask[0]);
         foreach (Collider2D hit in enemiesHit)
         {
-            hit.GetComponent<EnemyBehaviour>().KnockBack(10f, (transform.position - hit.transform.position).normalized);
+            hit.GetComponent<EnemyBehaviour>().KnockBack(5f * Vector3.Distance(transform.position, hit.transform.position), 
+                                                        (transform.position - hit.transform.position).normalized);
         }
     }
 
@@ -71,38 +76,14 @@ public class WaterOrb : OrbBehaviour, IOrb {
     {
         _AimLine.enabled = true;
         _AimLine.SetPosition(1, new Vector3(0, _Distance, 0));
-        _BeganAim = true;
     }
 
     public void UpdateAimLine()
     {
         transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
-        _Distance = Mathf.Clamp(MouseDistance(), 2.5f, _GlobalData.OrbDistance * 5f);
+        _Distance = Mathf.Clamp(MouseDistance(), 2f, _GlobalData.OrbDistance * 5f);
         if (!_BeganAim) ActivateAimLine();
-        _AimLine.SetPosition(1, new Vector3(0, _Distance, 0));
-    }
-
-    private void ResetCollider()
-    {
-        _Collider.size = new Vector2(0, 0);
-        _Collider.offset = new Vector2(0, 0);
-    }
-
-    public void UpdateBoxCollider(string size)
-    {
-        var sizes = Array.ConvertAll(size.Split(','), float.Parse);
-        _Collider.offset = new Vector2(0, sizes[0]);
-        _Collider.size = new Vector2(sizes[1], sizes[2]);
-    }
-
-    public void Move(float gap)
-    {
-        transform.position += transform.up * gap * _Distance / 5f;
-    }
-
-    public void CanAttack()
-    {
-        _IsAttacking = false;
+        _AimLine.SetPosition(1, new Vector3(0, _Distance / _GlobalData.OrbSize.x, 0));
     }
 
     public void Swap(int orbType)
@@ -125,4 +106,55 @@ public class WaterOrb : OrbBehaviour, IOrb {
             collision.GetComponent<EnemyBehaviour>().TakeDamage(Damage);
         }
     }
+    #endregion
+
+    #region //Additional Functions
+    private void ResetCollider()
+    {
+        _Collider.size = new Vector2(0, 0);
+        _Collider.offset = new Vector2(0, 0);
+    }
+
+    public void UpdateBoxCollider(string size)
+    {
+        var sizes = Array.ConvertAll(size.Split(','), float.Parse);
+        _Collider.offset = new Vector2(0, sizes[0]);
+        _Collider.size = new Vector2(sizes[1], sizes[2]);
+    }
+
+    public void Move(float gap)
+    {
+        transform.position += transform.up * gap * _Distance / 4f;
+    }
+
+    public void Reposition()
+    {
+        var orbHit = Physics2D.OverlapCircleAll(transform.position, _GlobalData.OrbSize.x/2f, _Mask[1]);
+        Debug.Log(orbHit.Length);
+        if (orbHit.Length < 2) return;
+        Vector3 averagePos = Vector3.zero;
+        foreach( Collider2D hit in orbHit)
+        {
+            averagePos += hit.transform.position;
+        }
+        averagePos = averagePos == Vector3.zero ? -transform.up : averagePos / orbHit.Length;
+        _RB.velocity = (transform.position - averagePos).normalized * 10f;
+        StartCoroutine(Knockback());
+    }
+
+    private IEnumerator Knockback()
+    {
+        while (_RB.velocity.magnitude != 0)
+        {
+            _RB.velocity = _RB.velocity.magnitude >= 0.1f ? _RB.velocity * 0.9f : Vector2.zero;
+            yield return null;
+        }
+    }
+
+    public void CanAttack()
+    {
+        Damage = 10;
+        _IsAttacking = false;
+    }
+    #endregion
 }

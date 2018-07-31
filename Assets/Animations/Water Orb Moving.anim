@@ -113,6 +113,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.35
+    functionName: CanAttack
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.35
     functionName: Move
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -120,7 +127,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.35
-    functionName: CanAttack
+    functionName: Reposition
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

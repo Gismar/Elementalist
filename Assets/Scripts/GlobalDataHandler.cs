@@ -20,7 +20,7 @@ public class GlobalDataHandler : MonoBehaviour {
     public KeyCode Recall = KeyCode.Space;
     public KeyCode Swap = KeyCode.Q;
 
-    public int Points = 0;
+    public int Points = 1000000;
     public int HighestTime;
 
     public enum Stats

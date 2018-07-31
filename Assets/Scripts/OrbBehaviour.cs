@@ -82,13 +82,13 @@ public class OrbBehaviour : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             _Orb.ActivateAimLine();
-            _IsIdle = false;
-            _Return = false;
         }
 
         if (Input.GetMouseButton(0))
         {
             _Orb.UpdateAimLine();
+            _IsIdle = false;
+            _Return = false;
         }
 
         if (Input.GetMouseButtonUp(0))

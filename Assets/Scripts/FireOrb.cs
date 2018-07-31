@@ -7,7 +7,7 @@ public class FireOrb : OrbBehaviour, IOrb {
     [SerializeField] private GameObject _Fireball;
     [SerializeField] private GameObject _RingOfFire;
 
-    public int Damage { get; private set; }
+    public float Damage { get; private set; }
     public float IdleDelay { get; private set; } = 3f;
     public float MainAttackDelay { get; private set; } = 1f;
     public float SecondaryAttackDelay { get; private set; } = 5f;
@@ -35,7 +35,6 @@ public class FireOrb : OrbBehaviour, IOrb {
 
     public void SetIdle()
     {
-        Damage = 1;
         _BeganAim = false;
         _IsAttacking = false;
         _LineHolder.SetActive(false);
@@ -45,7 +44,7 @@ public class FireOrb : OrbBehaviour, IOrb {
     {
         _IsAttacking = false;
         _LineHolder.SetActive(false);
-        Damage = Mathf.FloorToInt(20 * _GlobalData.OrbDamage);
+        Damage = 30 * _GlobalData.OrbDamage;
         CreateFireball(MouseAngle());
         CreateFireball(MouseAngle() - 180f);
     }
@@ -53,7 +52,7 @@ public class FireOrb : OrbBehaviour, IOrb {
     public void SecondaryAttack()
     {
         _IsAttacking = false;
-        Damage = Mathf.FloorToInt(40 * _GlobalData.OrbDamage);
+        Damage = 50 * _GlobalData.OrbDamage;
         CreateRingOfFire();
     }
 
@@ -86,23 +85,24 @@ public class FireOrb : OrbBehaviour, IOrb {
     {
         var temp = Instantiate(_Fireball);
         temp.transform.position = transform.position;
+        temp.transform.localScale = _GlobalData.OrbSize;
         temp.transform.rotation = Quaternion.Euler(0, 0, rotation);
-        temp.GetComponent<Fireball>().Setup(Mathf.FloorToInt(Damage), _GlobalData.OrbDistance);
+        temp.GetComponent<Fireball>().Setup(Damage, _GlobalData.OrbDistance);
     }
 
     private void CreateRingOfFire()
     {
         var temp = Instantiate(_RingOfFire);
         temp.transform.position = transform.position;
-        temp.GetComponent<FireRing>().Setup(Mathf.FloorToInt(Damage), _GlobalData.OrbDistance);
-
+        temp.transform.localScale = _GlobalData.OrbSize;
+        temp.GetComponent<FireRing>().Setup(Damage, _GlobalData.OrbDistance);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyBehaviour>().TakeDamage(Damage);
+            collision.GetComponent<EnemyBehaviour>().TakeDamage(30 * Time.deltaTime);
         }
     }
 }

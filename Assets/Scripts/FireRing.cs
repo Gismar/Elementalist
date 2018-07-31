@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class FireRing : MonoBehaviour {
 
-    private int _Damage;
+    private float _Damage;
     private float _Duration;
 
-    public void Setup(int damage, float duration)
+    public void Setup(float damage, float duration)
     {
         _Damage = damage;
         _Duration = duration + Time.time;
@@ -19,11 +19,11 @@ public class FireRing : MonoBehaviour {
         if (_Duration <= Time.time) Destroy(transform.gameObject);
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyBehaviour>().TakeDamage(_Damage);
+            collision.GetComponent<EnemyBehaviour>().TakeDamage(_Damage * Time.deltaTime);
         }
     }
 }

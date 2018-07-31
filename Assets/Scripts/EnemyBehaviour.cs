@@ -33,7 +33,7 @@ public class EnemyBehaviour : MonoBehaviour {
         _GlobalData = worldInfo;
     }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(float dmg)
     {
         _CurrentHealth -= dmg;
         GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, _OriginalColor, _CurrentHealth / _MaxHealth);
