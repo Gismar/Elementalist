@@ -5,13 +5,13 @@ using System.Text.RegularExpressions;
 
 public class SaveHandler {
 
-    [SerializeField] private WorldInformation _WorldInfo;
+    [SerializeField] private GlobalDataHandler _GlobalData;
 
     public void SaveGame()
     {
         ClearFile();
         StreamWriter writer = new StreamWriter("Assets/Save.txt");
-        writer.Write(EncodeToBase64(JsonUtility.ToJson(_WorldInfo)));
+        writer.Write(EncodeToBase64(JsonUtility.ToJson(_GlobalData)));
         writer.Close();
     }
 
@@ -20,7 +20,7 @@ public class SaveHandler {
         StreamReader reader = new StreamReader("Assets/Save.txt");
         string line = DecodeFromBase64(reader.ReadLine());
         //JsonUtility.FromJsonOverwrite(line, _WorldInfo);
-        _WorldInfo = JsonUtility.FromJson<WorldInformation>(line);
+        _GlobalData = JsonUtility.FromJson<GlobalDataHandler>(line);
         reader.Close();
     }
 

@@ -35,6 +35,10 @@ public class LevelUI : MonoBehaviour {
         _Health.text = _Player._CurrentHealth.ToString("HP: 0");
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (Time.timeSinceLevelLoad > _GlobalData.HighestTime)
+            {
+                _GlobalData.HighestTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
+            }
             GoToMainMenu();
         }
         if (_PointTimer < Time.time)
@@ -46,8 +50,7 @@ public class LevelUI : MonoBehaviour {
 
     public void GoToMainMenu()
     {
-
-        StartCoroutine(LoadScene());
+        SceneManager.LoadScene("Main Menu");
     }
 
     private string FormatTime()
@@ -55,14 +58,5 @@ public class LevelUI : MonoBehaviour {
         var s = Mathf.FloorToInt(Time.timeSinceLevelLoad % 60);
         var m = Mathf.FloorToInt(Time.timeSinceLevelLoad % 3600 / 60);
         return $"{m}m {s}s";
-    }
-
-    private IEnumerator LoadScene()
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Main Menu");
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
     }
 }

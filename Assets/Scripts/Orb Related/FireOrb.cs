@@ -29,7 +29,6 @@ public class FireOrb : OrbBehaviour, IOrb {
         _MainAttackTimers = mainTimers;
         _SecondaryAttackTimers = secondTimers;
         _OrbType = orbType;
-        Debug.Log($"Timers: Water {secondTimers[0]}\tFire {secondTimers[1]}");
         Startup();
     }
 
@@ -44,7 +43,7 @@ public class FireOrb : OrbBehaviour, IOrb {
     {
         _IsAttacking = false;
         _LineHolder.SetActive(false);
-        Damage = 30 * _GlobalData.OrbDamage;
+        Damage = 20 * _GlobalData.OrbDamage;
         CreateFireball(MouseAngle());
         CreateFireball(MouseAngle() - 180f);
     }
@@ -52,7 +51,7 @@ public class FireOrb : OrbBehaviour, IOrb {
     public void SecondaryAttack()
     {
         _IsAttacking = false;
-        Damage = 50 * _GlobalData.OrbDamage;
+        Damage = 25 * _GlobalData.OrbDamage;
         CreateRingOfFire();
     }
 
@@ -102,7 +101,7 @@ public class FireOrb : OrbBehaviour, IOrb {
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyBehaviour>().TakeDamage(30 * Time.deltaTime);
+            collision.GetComponent<IEnemy>().TakeDamage(5 * Time.deltaTime);
         }
     }
 }

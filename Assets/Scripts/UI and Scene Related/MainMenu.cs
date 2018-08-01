@@ -7,7 +7,6 @@ public class MainMenu : MonoBehaviour {
 
     public void Start()
     {
-        Debug.Log(GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>());
     }
 
     public void LoadScene(string sceneName)

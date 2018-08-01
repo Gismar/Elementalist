@@ -8,10 +8,13 @@ public class TutorialHandler : MonoBehaviour {
 
     private GlobalDataHandler _GlobalData;
     [SerializeField] private InputField[] _Inputs;
+    [SerializeField] private GameObject[] _Panels;
+    private int _PanelCount = -1;
 
     private void Start()
     {
         _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+        SwitchPanels();
         _Inputs[0].text = _GlobalData.Up.ToString();
         _Inputs[1].text = _GlobalData.Down.ToString();
         _Inputs[2].text = _GlobalData.Left.ToString();
@@ -43,6 +46,15 @@ public class TutorialHandler : MonoBehaviour {
     {
         _Inputs[4].text = _Inputs[4].text.ToUpper();
         _GlobalData.Swap = (KeyCode)System.Enum.Parse(typeof(KeyCode), _Inputs[4].text);
+    }
+
+    public void SwitchPanels()
+    {
+        _PanelCount = (_PanelCount + 1) == _Panels.Length ? 0 : _PanelCount + 1;
+        for (int i = 0; i < _Panels.Length; i++)
+        {
+            _Panels[i].SetActive(i == _PanelCount ? true : false);
+        }
     }
 
     public void LoadScene(string name)

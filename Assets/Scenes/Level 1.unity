@@ -507,44 +507,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be73d2e2c1b1fc4c9b22a131c64845e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _SpawnTimer: 0
-  _SpawnDelay: 0
   _Player: {fileID: 1875280626}
-  _EnemyPrefab: {fileID: 1922259084083554, guid: 4dfd8be8977ba104cb29cd56e2d270d0,
-    type: 2}
+  _EnemyPrefab:
+  - {fileID: 1921654563885492, guid: c72d06c0480c720429ec2956e453815f, type: 2}
+  - {fileID: 1755881630131676, guid: ff22c9111bec2884fbd9693e490528da, type: 2}
+  - {fileID: 1056318839734102, guid: 575d251af4080f7469ce387885f8beab, type: 2}
+  - {fileID: 1275943665858038, guid: bb1d9245b7207514cb60c6bd2f195811, type: 2}
   _Map: {fileID: 1965022272}
-  _Multiplier: 0
-  _MultiplierTimer: 0
-  _Time: 0
-  _Color:
-    serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 1, b: 0, a: 1}
-    key2: {r: 0, g: 1, b: 0, a: 0}
-    key3: {r: 0, g: 1, b: 1, a: 0}
-    key4: {r: 0, g: 0, b: 1, a: 0}
-    key5: {r: 1, g: 0, b: 1, a: 0}
-    key6: {r: 1, g: 0, b: 1, a: 0}
-    key7: {r: 1, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 13107
-    ctime2: 26214
-    ctime3: 39321
-    ctime4: 52428
-    ctime5: 65535
-    ctime6: 65535
-    ctime7: 65535
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 6
-    m_NumAlphaKeys: 2
 --- !u!4 &232524566
 Transform:
   m_ObjectHideFlags: 0

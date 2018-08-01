@@ -36,13 +36,13 @@ public class WaterOrb : OrbBehaviour, IOrb {
         _MainAttackTimers = mainTimers;
         _SecondaryAttackTimers = secondTimers;
         _OrbType = orbType;
-        Debug.Log($"Timers: Water {secondTimers[0]}\tFire {secondTimers[1]}");
+        Damage = 5;
         Startup();
     }
 
     public void SetIdle()
     {
-        Damage = 10;
+        Damage = 5;
         _BeganAim = false;
         _IsAttacking = false;
         _AimLine.enabled = false;
@@ -50,8 +50,9 @@ public class WaterOrb : OrbBehaviour, IOrb {
 
     public void MainAttack()
     {
+        UpdateAimLine();
         GetComponent<LineRenderer>().enabled = false;
-        Damage = 20 * _GlobalData.OrbDamage;
+        Damage = 15 * _GlobalData.OrbDamage;
         transform.position += transform.up;
         _Distance -= 1f;
         ResetCollider();
@@ -61,13 +62,13 @@ public class WaterOrb : OrbBehaviour, IOrb {
     public void SecondaryAttack()
     {
         _AimLine.enabled = false;
-        Damage = 40 * _GlobalData.OrbDamage;
+        Damage = 20 * _GlobalData.OrbDamage;
         ResetCollider();
         _Anim.SetTrigger("Pull");
         var enemiesHit = Physics2D.OverlapCircleAll(transform.position, 2f * _GlobalData.OrbSize.x, _Mask[0]);
         foreach (Collider2D hit in enemiesHit)
         {
-            hit.GetComponent<EnemyBehaviour>().KnockBack(5f * Vector3.Distance(transform.position, hit.transform.position), 
+            hit.GetComponent<IEnemy>().KnockBack(5f * Vector3.Distance(transform.position, hit.transform.position), 
                                                         (transform.position - hit.transform.position).normalized);
         }
     }
@@ -103,7 +104,8 @@ public class WaterOrb : OrbBehaviour, IOrb {
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyBehaviour>().TakeDamage(Damage);
+            var enemy = collision.GetComponent<IEnemy>();
+            enemy.TakeDamage(Damage);
         }
     }
     #endregion
@@ -130,14 +132,13 @@ public class WaterOrb : OrbBehaviour, IOrb {
     public void Reposition()
     {
         var orbHit = Physics2D.OverlapCircleAll(transform.position, _GlobalData.OrbSize.x/2f, _Mask[1]);
-        Debug.Log(orbHit.Length);
         if (orbHit.Length < 2) return;
         Vector3 averagePos = Vector3.zero;
         foreach( Collider2D hit in orbHit)
         {
             averagePos += hit.transform.position;
         }
-        averagePos = averagePos == Vector3.zero ? -transform.up : averagePos / orbHit.Length;
+        averagePos = Vector3.Distance(averagePos, transform.position) < 0.5f ? new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)) : averagePos / orbHit.Length;
         _RB.velocity = (transform.position - averagePos).normalized * 10f;
         StartCoroutine(Knockback());
     }

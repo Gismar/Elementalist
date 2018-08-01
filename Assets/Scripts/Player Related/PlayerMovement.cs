@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour {
         if(Time.time > _Timer)
         {
             CreateNewOrb();
-            _Timer = Time.time + _GlobalData.OrbDelay;
+            _Timer = Time.time + (_GlobalData.OrbDelay * _OrbCount);
             _CurrentHealth++;
         }
     }
