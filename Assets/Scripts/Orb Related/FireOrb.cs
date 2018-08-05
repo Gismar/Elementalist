@@ -8,7 +8,6 @@ public class FireOrb : OrbBehaviour, IOrb {
     [SerializeField] private GameObject _RingOfFire;
 
     public float Damage { get; private set; }
-    public float IdleDelay { get; private set; } = 3f;
     public float MainAttackDelay { get; private set; } = 1f;
     public float SecondaryAttackDelay { get; private set; } = 5f;
 
@@ -65,19 +64,6 @@ public class FireOrb : OrbBehaviour, IOrb {
     {
         if (!_BeganAim) ActivateAimLine();
         _LineHolder.transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
-    }
-
-    public void Swap(int orbType)
-    {
-        switch (orbType)
-        {
-            case 0:
-                var temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[orbType]);
-                temp.transform.position = transform.position;
-                temp.GetComponent<IOrb>().Setup(_Offset, _Player, _GlobalData, _IsIdle, _MainAttackTimers, _SecondaryAttackTimers, orbType);
-                Destroy(transform.gameObject);
-                break;
-        }
     }
 
     private void CreateFireball(float rotation)

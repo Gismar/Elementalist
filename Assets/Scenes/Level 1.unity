@@ -120,6 +120,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114115687329883422, guid: 43ab68bcb9b93784099aff24048b7f30,
+        type: 2}
+      propertyPath: Orbs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4401299558071258, guid: 43ab68bcb9b93784099aff24048b7f30, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -157,6 +162,12 @@ Prefab:
       propertyPath: _Map
       value: 
       objectReference: {fileID: 1965022272}
+    - target: {fileID: 114115687329883422, guid: 43ab68bcb9b93784099aff24048b7f30,
+        type: 2}
+      propertyPath: Orbs.Array.data[2]
+      value: 
+      objectReference: {fileID: 1145053686400964, guid: 5bd343bb31fbd9f43aa08dcf7028d89a,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43ab68bcb9b93784099aff24048b7f30, type: 2}
   m_IsPrefabAsset: 0

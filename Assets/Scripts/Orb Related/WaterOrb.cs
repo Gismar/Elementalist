@@ -13,7 +13,6 @@ public class WaterOrb : OrbBehaviour, IOrb {
     private float _Distance;
 
     public float Damage { get; private set; }
-    public float IdleDelay { get; private set; } = 3f;
     public float MainAttackDelay { get; private set; } = 0.5f;
     public float SecondaryAttackDelay { get; private set; } = 2f;
 
@@ -85,19 +84,6 @@ public class WaterOrb : OrbBehaviour, IOrb {
         _Distance = Mathf.Clamp(MouseDistance(), 2f, _GlobalData.OrbDistance * 5f);
         if (!_BeganAim) ActivateAimLine();
         _AimLine.SetPosition(1, new Vector3(0, _Distance / _GlobalData.OrbSize.x, 0));
-    }
-
-    public void Swap(int orbType)
-    {
-        switch (orbType)
-        {
-            case 1:
-                var temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[orbType]);
-                temp.transform.position = transform.position;
-                temp.GetComponent<IOrb>().Setup(_Offset, _Player, _GlobalData, _IsIdle, _MainAttackTimers, _SecondaryAttackTimers, orbType);
-                Destroy(transform.gameObject);
-                break;
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

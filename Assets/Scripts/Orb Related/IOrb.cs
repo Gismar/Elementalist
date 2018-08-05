@@ -9,10 +9,9 @@ public interface IOrb {
     void ActivateAimLine();
     void UpdateAimLine();
     void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType);
-    void Swap(int orb);
+    void Swap();
 
     float Damage { get; }
-    float IdleDelay { get; }
     float MainAttackDelay { get; }
     float SecondaryAttackDelay { get; }
 }

@@ -59,8 +59,9 @@ public class OrbBehaviour : MonoBehaviour {
 
         if (Input.GetKeyDown(_GlobalData.Swap))
         {
-            _OrbType = _OrbType + 1 == 2 ? 0 : _OrbType + 1;
-            _Orb.Swap(_OrbType);
+            _OrbType = _OrbType + 1 == _Player.GetComponent<PlayerMovement>().Orbs.Length ? 0 : _OrbType + 1;
+            Debug.Log(_OrbType);
+            _Orb.Swap();
         }
 
         if (Input.GetKeyDown(_GlobalData.Recall) && !_IsIdle)
@@ -128,5 +129,28 @@ public class OrbBehaviour : MonoBehaviour {
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var distance = Vector3.Distance(mousePos, transform.position);
         return distance;
+    }
+
+    public void Swap()
+    {
+        GameObject temp = null;
+        switch (_OrbType)
+        {
+            case 0:
+                temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[_OrbType]);
+                break;
+            case 1:
+                temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[_OrbType]);
+                break;
+            case 2:
+                temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[_OrbType]);
+                break;
+            default: break;
+
+        }
+        if (temp == null) return;
+        temp.transform.position = transform.position;
+        temp.GetComponent<IOrb>().Setup(_Offset, _Player, _GlobalData, _IsIdle, _MainAttackTimers, _SecondaryAttackTimers, _OrbType);
+        Destroy(transform.gameObject);
     }
 }
