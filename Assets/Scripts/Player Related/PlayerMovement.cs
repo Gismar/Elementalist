@@ -5,23 +5,24 @@ using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour {
 
-    [SerializeField] private float _Speed;
-    [SerializeField] public GameObject[] Orbs;
-    [SerializeField] private float _Timer;
-    [SerializeField] private int _MaxHealth;
-    [SerializeField] private Tilemap _Map;
-    private GlobalDataHandler _GlobalData;
-    public int _CurrentHealth;
-    private float _OrbCount;
-    private float _IframeTimer;
-	// Use this for initialization
+    public GameObject[] Orbs;
+
+    [SerializeField] private Tilemap _map;
+    private float _speed;
+    private float _timer;
+    private int _maxHealth;
+    private GlobalDataHandler _globalData;
+    public int _currentHealth;
+    private float _orbCount;
+    private float _iframeTimer;
+    
 	void Start () {
-        _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
-        _MaxHealth = _GlobalData.PlayerMaxHealth;
-        _CurrentHealth = _MaxHealth;
+        _globalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+        _maxHealth = _globalData.PlayerMaxHealth;
+        _currentHealth = _maxHealth;
         CreateNewOrb();
-        _Speed = _GlobalData.PlayerSpeed;
-        _Timer = Time.time + _GlobalData.OrbDelay;
+        _speed = _globalData.PlayerSpeed;
+        _timer = Time.time + _globalData.OrbDelay;
 	}
 	
 	void Update () {
@@ -31,48 +32,48 @@ public class PlayerMovement : MonoBehaviour {
         float moveX = 0;
         float moveY = 0;
 
-        if (Input.GetKey(_GlobalData.Right)) moveX = IsXInMap(1f * Time.deltaTime * _Speed);
-        if (Input.GetKey(_GlobalData.Left)) moveX = IsXInMap(-1f * Time.deltaTime * _Speed);
-        if (Input.GetKey(_GlobalData.Up)) moveY = IsYInMap(1f * Time.deltaTime * _Speed);
-        if (Input.GetKey(_GlobalData.Down)) moveY = IsYInMap(-1f * Time.deltaTime * _Speed);
+        if (Input.GetKey(_globalData.Right)) moveX = IsXInMap(1f * Time.deltaTime * _speed);
+        if (Input.GetKey(_globalData.Left)) moveX = IsXInMap(-1f * Time.deltaTime * _speed);
+        if (Input.GetKey(_globalData.Up)) moveY = IsYInMap(1f * Time.deltaTime * _speed);
+        if (Input.GetKey(_globalData.Down)) moveY = IsYInMap(-1f * Time.deltaTime * _speed);
 
         transform.Translate(new Vector3(moveX,moveY), Space.World);
-        if (_IframeTimer < Time.time) GetComponent<SpriteRenderer>().color = Color.black;
-        if (_OrbCount > 4) return;
-        if(Time.time > _Timer)
+        if (_iframeTimer < Time.time) GetComponent<SpriteRenderer>().color = Color.black;
+        if (_orbCount > 4) return;
+        if(Time.time > _timer)
         {
             CreateNewOrb();
-            _Timer = Time.time + (_GlobalData.OrbDelay * _OrbCount);
-            _CurrentHealth++;
+            _timer = Time.time + (_globalData.OrbDelay * _orbCount);
+            _currentHealth++;
         }
     }
 
     private float IsXInMap(float x)
     {
-        return _Map.localBounds.Contains(new Vector3(transform.position.x + x, 0)) ? x : 0;
+        return _map.localBounds.Contains(new Vector3(transform.position.x + x, 0)) ? x : 0;
     }
 
     private float IsYInMap(float y)
     {
-        return _Map.localBounds.Contains(new Vector3(0, transform.position.y + y)) ? y : 0;
+        return _map.localBounds.Contains(new Vector3(0, transform.position.y + y)) ? y : 0;
     }
 
     void CreateNewOrb()
     {
-        _OrbCount++;
+        _orbCount++;
         var temp = Instantiate(Orbs[0]);
-        var randomOffset = _OrbCount/2.5f * Mathf.PI;
+        var randomOffset = _orbCount/2.5f * Mathf.PI;
         temp.transform.position = transform.position;
-        temp.GetComponent<IOrb>().Setup(new Vector2(randomOffset, randomOffset), transform, _GlobalData, true, new float[4], new float[4], 0);
+        temp.GetComponent<IOrb>().Setup(new Vector2(randomOffset, randomOffset), transform, _globalData, true, new float[4], new float[4], 0);
     }
 
     public void TakeDamage(int dmg)
     {
-        if (_IframeTimer > Time.time) return;
-        _CurrentHealth -= dmg;
-        _CurrentHealth = _CurrentHealth <= 0 ? 0 : _CurrentHealth;
+        if (_iframeTimer > Time.time) return;
+        _currentHealth -= dmg;
+        _currentHealth = _currentHealth <= 0 ? 0 : _currentHealth;
         var color = GetComponent<SpriteRenderer>().color;
         GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0.5f);
-        _IframeTimer = Time.time + 1f;
+        _iframeTimer = Time.time + 1f;
     }
 }

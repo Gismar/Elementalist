@@ -6,51 +6,39 @@ using UnityEngine.SceneManagement;
 
 public class LevelUI : MonoBehaviour {
 
-    [SerializeField] private PlayerMovement _Player;
-    [SerializeField] private Text _Health;
-    [SerializeField] private Text _Timer;
-    [SerializeField] private Text _Points;
-    [SerializeField] private float _PointTimer;
-    [SerializeField] private GameObject _GameOver;
-    [SerializeField] private Text _GameOverTimer;
-    private GlobalDataHandler _GlobalData;
-    private bool _Dead = false;
+    [SerializeField] private PlayerMovement _player;
+    [SerializeField] private Text _health;
+    [SerializeField] private Text _timer;
+    [SerializeField] private Text _points;
+    private float _pointTimer;
+    private GlobalDataHandler _globalData;
 
-    private void Start() => _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+    private void Start() => _globalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
 
     void Update () {
-        if (_Dead) return;
-        if(_Player._CurrentHealth == 0)
+        if(_player._currentHealth == 0)
         {
-            if(Time.timeSinceLevelLoad > _GlobalData.HighestTime)
-            {
-                _GlobalData.HighestTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
-            }
-            _GameOver.SetActive(true);
-            _GameOverTimer.text = FormatTime();
-            _Dead = true;
+            _globalData.SurvivalTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
+            ChangeScenes("Game Over");
         }
-        _Points.text = _GlobalData.Points.ToString("0 Ps");
-        _Timer.text = FormatTime();
-        _Health.text = _Player._CurrentHealth.ToString("HP: 0");
+        _points.text = _globalData.Points.ToString("0 Ps");
+        _timer.text = FormatTime();
+        _health.text = _player._currentHealth.ToString("HP: 0");
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Time.timeSinceLevelLoad > _GlobalData.HighestTime)
-            {
-                _GlobalData.HighestTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
-            }
-            GoToMainMenu();
+            _globalData.CheckScore();
+            ChangeScenes("Main Menu");
         }
-        if (_PointTimer < Time.time)
+        if (_pointTimer < Time.time)
         {
-            _GlobalData.Points += 1;
-            _PointTimer = Time.time + 1;
+            _globalData.Points += 1;
+            _pointTimer = Time.time + 1;
         }
 	}
 
-    public void GoToMainMenu()
+    public void ChangeScenes(string sceneName)
     {
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene(sceneName);
     }
 
     private string FormatTime()

@@ -3,119 +3,121 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class OrbBehaviour : MonoBehaviour {
-    protected IOrb _Orb;
-    protected Vector2 _Offset;
-    protected Transform _Player;
-    protected GlobalDataHandler _GlobalData;
-    protected bool _IsAttacking = false;
-    protected bool _BeganAim = false;
-    protected bool _IsIdle = true;
-    protected float[] _MainAttackTimers;
-    protected float[] _SecondaryAttackTimers;
-    protected int _OrbType;
+    protected IOrb _orb;
+    protected Vector2 _offset;
+    protected Transform _player;
+    protected GlobalDataHandler _globalData;
+    protected bool _isAttacking = false;
+    protected bool _beganAim = false;
+    protected bool _isIdle = true;
+    protected float[] _mainAttackTimers;
+    protected float[] _secondaryAttackTimers;
+    protected int _orbType;
 
-    private bool _Return;
-    private bool _CanUseMainAttack = false;
-    private bool _CanUseSecondary = false;
-    private float _IdleTimerLerp;
-    private float _MainAttackTimer;
-    private float _SecondaryAttackTimer;
+    private bool _return;
+    private bool _canUseMainAttack = false;
+    private bool _canUseSecondary = false;
+    private float _idleTimerLerp;
+    private float _mainAttackTimer;
+    private float _secondaryAttackTimer;
 
     protected void Startup()
     {
-        _SecondaryAttackTimer = _SecondaryAttackTimers[_OrbType];
-        _MainAttackTimer = _MainAttackTimers[_OrbType];
+        _secondaryAttackTimer = _secondaryAttackTimers[_orbType];
+        _mainAttackTimer = _mainAttackTimers[_orbType];
     }
 
     void Update () {
-        if (_IsIdle)
+        if (_isIdle)
         {
-            transform.position = new Vector2(_Player.position.x + Mathf.Cos(Time.time + _Offset.x) * transform.localScale.x,
-                                            _Player.position.y + Mathf.Sin(Time.time + _Offset.y) * transform.localScale.y);
+            transform.position = new Vector2(_player.position.x + Mathf.Cos(Time.time + _offset.x) * transform.localScale.x,
+                                            _player.position.y + Mathf.Sin(Time.time + _offset.y) * transform.localScale.y);
         }
-        if (_Return)
+        if (_return)
         {
-            transform.position = Vector3.Lerp(transform.position, _Player.position, _IdleTimerLerp);
-            _IdleTimerLerp += Time.deltaTime / Vector3.Distance(transform.position, _Player.position);
-            if (_IdleTimerLerp >= 1)
+            transform.position = Vector3.Lerp(transform.position, _player.position, _idleTimerLerp);
+            _idleTimerLerp += Time.deltaTime / Vector3.Distance(transform.position, _player.position);
+            if (_idleTimerLerp >= 1)
             {
-                _IsIdle = true;
-                _Return = false;
+                _isIdle = true;
+                _return = false;
             }
         }
 
-        if (!_CanUseSecondary)
+        if (!_canUseSecondary)
         {
-            _CanUseSecondary = _SecondaryAttackTimer <= Time.time;
-            transform.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, new Color(0.7f, 0.7f, 0.7f, 0.7f), (_SecondaryAttackTimer - Time.time) / _Orb.SecondaryAttackDelay);
+            _canUseSecondary = _secondaryAttackTimer <= Time.time;
+            transform.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, new Color(0.7f, 0.7f, 0.7f, 0.7f), (_secondaryAttackTimer - Time.time) / _orb.SecondaryAttackDelay);
         }
 
-        if (!_CanUseMainAttack)
+        if (!_canUseMainAttack)
         {
-            _CanUseMainAttack = _MainAttackTimer <= Time.time;
+            _canUseMainAttack = _mainAttackTimer <= Time.time;
         }
 
-        if (_IsAttacking) return;
+        if (_isAttacking) return;
 
-        if (Input.GetKeyDown(_GlobalData.Swap))
+        if (Input.GetKeyDown(_globalData.Swap))
         {
-            _OrbType = _OrbType + 1 == _Player.GetComponent<PlayerMovement>().Orbs.Length ? 0 : _OrbType + 1;
-            Debug.Log(_OrbType);
-            _Orb.Swap();
+            _orbType = _orbType + 1 == _player.GetComponent<PlayerMovement>().Orbs.Length ? 0 : _orbType + 1;
+            Debug.Log(_orbType);
+            _orb.Swap();
         }
 
-        if (Input.GetKeyDown(_GlobalData.Recall) && !_IsIdle)
+        if (Input.GetKeyDown(_globalData.Recall) && !_isIdle)
         {
-            _Return = true;
-            _Orb.SetIdle();
-            _IdleTimerLerp = 0;
+            _return = true;
+            _orb.SetIdle();
+            _idleTimerLerp = 0;
         }
 
-        if (Input.GetMouseButtonDown(1) && _CanUseSecondary)
+        if (Input.GetMouseButtonDown(1) && _canUseSecondary)
         {
             SetUpSecondaryAttackTimer();
-            _IsAttacking = true;
-            _Orb.SecondaryAttack();
+            _isAttacking = true;
+            _orb.SecondaryAttack();
         }
-
-        if (!_CanUseMainAttack) return;
+        
+        if (!_canUseMainAttack) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            _Orb.ActivateAimLine();
+            _orb.ActivateAimLine();
         }
 
         if (Input.GetMouseButton(0))
         {
-            _Orb.UpdateAimLine();
-            _IsIdle = false;
-            _Return = false;
+            _orb.UpdateAimLine();
+            _isIdle = false;
+            _return = false;
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            _IsAttacking = true;
-            _BeganAim = false;
-            _Orb.MainAttack();
+            _isAttacking = true;
+            _beganAim = false;
+            _orb.MainAttack();
             SetUpMainAttackTimer();
         }
-
     }
 
+    #region //Setup Timers
     private void SetUpMainAttackTimer()
     {
-        _MainAttackTimer = Time.time + _Orb.MainAttackDelay;
-        _MainAttackTimers[_OrbType] = _MainAttackTimer;
-        _CanUseMainAttack = false;
+        _mainAttackTimer = Time.time + _orb.MainAttackDelay;
+        _mainAttackTimers[_orbType] = _mainAttackTimer;
+        _canUseMainAttack = false;
     }
 
     private void SetUpSecondaryAttackTimer()
     {
-        _SecondaryAttackTimer = Time.time + _Orb.SecondaryAttackDelay;
-        _SecondaryAttackTimers[_OrbType] = _SecondaryAttackTimer;
-        _CanUseSecondary = false;
+        _secondaryAttackTimer = Time.time + _orb.SecondaryAttackDelay;
+        _secondaryAttackTimers[_orbType] = _secondaryAttackTimer;
+        _canUseSecondary = false;
     }
+    #endregion
 
+    #region //Mouse Calculations
     protected float MouseAngle()
     {
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -130,27 +132,28 @@ public class OrbBehaviour : MonoBehaviour {
         var distance = Vector3.Distance(mousePos, transform.position);
         return distance;
     }
+    #endregion
 
     public void Swap()
     {
         GameObject temp = null;
-        switch (_OrbType)
+        switch (_orbType)
         {
             case 0:
-                temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[_OrbType]);
+                temp = Instantiate(_player.GetComponent<PlayerMovement>().Orbs[_orbType]);
                 break;
             case 1:
-                temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[_OrbType]);
+                temp = Instantiate(_player.GetComponent<PlayerMovement>().Orbs[_orbType]);
                 break;
             case 2:
-                temp = Instantiate(_Player.GetComponent<PlayerMovement>().Orbs[_OrbType]);
+                temp = Instantiate(_player.GetComponent<PlayerMovement>().Orbs[_orbType]);
                 break;
             default: break;
 
         }
         if (temp == null) return;
         temp.transform.position = transform.position;
-        temp.GetComponent<IOrb>().Setup(_Offset, _Player, _GlobalData, _IsIdle, _MainAttackTimers, _SecondaryAttackTimers, _OrbType);
+        temp.GetComponent<IOrb>().Setup(_offset, _player, _globalData, _isIdle, _mainAttackTimers, _secondaryAttackTimers, _orbType);
         Destroy(transform.gameObject);
     }
 }

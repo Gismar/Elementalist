@@ -189,9 +189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd1c040f9ddfb6449f30bf4e68deebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _EnemyInfo: {fileID: 11400000, guid: 7008d95a197b11a4bb45bce1e037cfc4, type: 2}
-  _TierSprite: {fileID: 212688602646750750}
-  _Offsprings: {fileID: 1234760405948328, guid: 2ae66c44592be5547be36ce3f4e01cda,
+  _enemyInfo: {fileID: 11400000, guid: 7008d95a197b11a4bb45bce1e037cfc4, type: 2}
+  _tierSprite: {fileID: 212688602646750750}
+  _offsprings: {fileID: 1234760405948328, guid: 2ae66c44592be5547be36ce3f4e01cda,
     type: 2}
 --- !u!212 &212008942554813448
 SpriteRenderer:

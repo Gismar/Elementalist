@@ -3,79 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour {
-    protected IEnemy _Enemy;
-    protected Transform _Player;
-    protected float _Speed;
-    protected Rigidbody2D _RB;
-    protected GlobalDataHandler _GlobalData;
+    protected IEnemy _enemy;
+    protected Transform _player;
+    protected float _speed;
+    protected Rigidbody2D _rigidBody;
+    protected GlobalDataHandler _globalData;
 
     protected void Startup()
     {
-        _RB = GetComponent<Rigidbody2D>();
-        _Enemy.IsSlowed = false;
-        _Enemy.IsDrenched = false;
-        _Enemy.IsStunned = false;
-        _Enemy.IsKnockedBack = false;
-        _Enemy.SlowStrength = 1f;
-        _Enemy.InvincibilityTimer = Time.time + 0.5f;
-        _Enemy.IsInvincible = true;
+        _rigidBody = GetComponent<Rigidbody2D>();
+        _enemy.IsSlowed = false;
+        _enemy.IsDrenched = false;
+        _enemy.IsStunned = false;
+        _enemy.IsKnockedBack = false;
+        _enemy.SlowStrength = 1f;
+        _enemy.InvincibilityTimer = Time.time + 0.5f;
+        _enemy.IsInvincible = true;
     }
 
     private void Update()
     {
-        if (_Enemy.IsKnockedBack)
+        if (_enemy.IsKnockedBack)
         {
-            _RB.velocity = _RB.velocity.magnitude >= 0.1f ? _RB.velocity * 0.9f : Vector2.zero;
-            _Enemy.IsKnockedBack = _RB.velocity.magnitude == 0 ? false : true;
+            _rigidBody.velocity = _rigidBody.velocity.magnitude >= 0.1f ? _rigidBody.velocity * 0.9f : Vector2.zero;
+            _enemy.IsKnockedBack = _rigidBody.velocity.magnitude == 0 ? false : true;
         }
 
-        if(_Enemy.IsInvincible)
+        if(_enemy.IsInvincible)
         {
-            _Enemy.IsInvincible = Time.time > _Enemy.InvincibilityTimer ? false : true;
-            GetComponent<SpriteRenderer>().color = _Enemy.IsInvincible ?
-                new Color(_Enemy.EnemyInfo.BaseColor.r, _Enemy.EnemyInfo.BaseColor.g, _Enemy.EnemyInfo.BaseColor.b, 0.25f)
-                : _Enemy.EnemyInfo.BaseColor;
+            _enemy.IsInvincible = Time.time > _enemy.InvincibilityTimer ? false : true;
+            GetComponent<SpriteRenderer>().color = _enemy.IsInvincible ?
+                new Color(_enemy.EnemyInfo.BaseColor.r, _enemy.EnemyInfo.BaseColor.g, _enemy.EnemyInfo.BaseColor.b, 0.25f)
+                : _enemy.EnemyInfo.BaseColor;
         }
 
-        if (_Enemy.IsStunned)
+        if (_enemy.IsStunned)
         {
-            _Enemy.IsStunned = Time.time > _Enemy.StunDuration ? false : true;
+            _enemy.IsStunned = Time.time > _enemy.StunDuration ? false : true;
             return;
         }
 
-        var direction = (_Player.position - transform.position).normalized;
+        var direction = (_player.position - transform.position).normalized;
         var rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.Euler(0, 0, rotation);
-        transform.position += transform.up * Time.deltaTime * _Speed * _Enemy.SlowStrength;
-        if (_Enemy.IsSlowed)
+        transform.position += transform.up * Time.deltaTime * _speed * _enemy.SlowStrength;
+        if (_enemy.IsSlowed)
         {
-            _Enemy.IsSlowed = Time.time > _Enemy.SlowDuration ? false : true;
-            _Enemy.SlowStrength = _Enemy.IsSlowed ? _Enemy.SlowStrength : 1f;
-            Debug.Log($"Enemy is Slowed ({_Enemy.IsSlowed}) by {1 - _Enemy.SlowStrength} for {_Enemy.SlowDuration - Time.time}");
+            _enemy.IsSlowed = Time.time > _enemy.SlowDuration ? false : true;
+            _enemy.SlowStrength = _enemy.IsSlowed ? _enemy.SlowStrength : 1f;
+            Debug.Log($"Enemy is Slowed ({_enemy.IsSlowed}) by {1 - _enemy.SlowStrength} for {_enemy.SlowDuration - Time.time}");
         }
 
-        if (_Enemy.IsDrenched)
-            _Enemy.IsDrenched = Time.time > _Enemy.DrenchDuration ? false : true;
+        if (_enemy.IsDrenched)
+            _enemy.IsDrenched = Time.time > _enemy.DrenchDuration ? false : true;
     }
 
     public void KnockBack(float strength, Vector2 direction)
     {
-        _RB.velocity = direction * strength;
-        _Enemy.IsKnockedBack = true;
+        _rigidBody.velocity = direction * strength;
+        _enemy.IsKnockedBack = true;
     }
 
     public void TakeDamage(float dmg)
     {
-        if (Time.time < _Enemy.InvincibilityTimer) return;
-        _Enemy.CurrentHealth -= dmg;
-        GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, _Enemy.EnemyInfo.BaseColor, _Enemy.CurrentHealth / _Enemy.MaxHealth);
-        _Enemy.Die();
+        if (Time.time < _enemy.InvincibilityTimer) return;
+        _enemy.CurrentHealth -= dmg;
+        GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, _enemy.EnemyInfo.BaseColor, _enemy.CurrentHealth / _enemy.MaxHealth);
+        _enemy.Die();
     }
 
     public void SetTierIcon()
     {
-        _Enemy.TierRenderer.color = _Enemy.EnemyInfo.TierColors.Evaluate((_Enemy.Tier % 7) / 7f);
-        _Enemy.TierRenderer.sprite = _Enemy.EnemyInfo.Tiers[Mathf.FloorToInt(_Enemy.Tier / 7f)];
+        _enemy.TierRenderer.color = _enemy.EnemyInfo.TierColors.Evaluate((_enemy.Tier % 7) / 7f);
+        _enemy.TierRenderer.sprite = _enemy.EnemyInfo.Tiers[Mathf.FloorToInt(_enemy.Tier / 7f)];
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -83,7 +83,7 @@ public class EnemyBehaviour : MonoBehaviour {
         if (collision.transform.CompareTag("Player"))
         {
             KnockBack(20f, -transform.up);
-            if (_Enemy.IsInvincible) return;
+            if (_enemy.IsInvincible) return;
             collision.transform.GetComponent<PlayerMovement>().TakeDamage(1);
         }
     }

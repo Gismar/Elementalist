@@ -5,38 +5,38 @@ using UnityEngine.UI;
 
 public class Upgrade : MonoBehaviour {
 
-    [SerializeField] private Text _UpgradeValue;
-    [SerializeField] private Text _UpgradeCost;
-    [SerializeField] private Button _UpgradeButton;
-    [SerializeField] private GlobalDataHandler.Stats _Stat;
-    private GlobalDataHandler _GlobalData;
+    [SerializeField] private Text _upgradeValueText;
+    [SerializeField] private Text _upgradeCostText;
+    [SerializeField] private Button _upgradeButton;
+    [SerializeField] private GlobalDataHandler.Stats _stat;
+    private GlobalDataHandler _globalData;
 
     private void Start()
     {
-        _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
-        _GlobalData.StatDictionary[_Stat].SetWorldInfo(_GlobalData);
+        _globalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+        _globalData.StatDictionary[_stat].SetWorldInfo(_globalData);
         UpdateText();
     }
 
     public void UpgradeStats()
     {
-        if (_GlobalData.StatDictionary[_Stat].CanBuy() && !_GlobalData.StatDictionary[_Stat].IsMaxLevel())
+        if (_globalData.StatDictionary[_stat].CanBuy() && !_globalData.StatDictionary[_stat].IsMaxLevel())
         {
-            _GlobalData.UsePoints(_GlobalData.StatDictionary[_Stat].Upgrade());
+            _globalData.UsePoints(_globalData.StatDictionary[_stat].Upgrade());
             UpdateText();
-            if (_GlobalData.StatDictionary[_Stat].IsMaxLevel())
+            if (_globalData.StatDictionary[_stat].IsMaxLevel())
                 DeactivateButton();
         }
     }
 
     private void UpdateText()
     {
-        _UpgradeValue.text = _GlobalData.StatDictionary[_Stat].Format;
-        _UpgradeCost.text = _GlobalData.StatDictionary[_Stat].Cost.ToString("0 Ps");
+        _upgradeValueText.text = _globalData.StatDictionary[_stat].Format;
+        _upgradeCostText.text = _globalData.StatDictionary[_stat].Cost.ToString("0 Ps");
     }
 
     private void DeactivateButton()
     {
-        _UpgradeButton.enabled = false;
+        _upgradeButton.enabled = false;
     }
 }

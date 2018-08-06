@@ -207,9 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c7bd7cfc10e024eb15587f7d9c822c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _LineHolder: {fileID: 0}
-  _Fireball: {fileID: 1968323233546266, guid: 84bce5fb09e300c4383d4558d0e4c7a9, type: 2}
-  _RingOfFire: {fileID: 1048750157368418, guid: f0fdf7da01206e84391fac624ff179ff,
+  _lineHolder: {fileID: 1486610239010986}
+  _fireball: {fileID: 1968323233546266, guid: 84bce5fb09e300c4383d4558d0e4c7a9, type: 2}
+  _ringOfFire: {fileID: 1048750157368418, guid: f0fdf7da01206e84391fac624ff179ff,
     type: 2}
 --- !u!120 &120412915741913480
 LineRenderer:

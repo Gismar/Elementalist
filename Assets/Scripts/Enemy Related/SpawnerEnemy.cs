@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnerEnemy : EnemyBehaviour, IEnemy {
-    [SerializeField] private EnemyScriptable _EnemyInfo;
-    [SerializeField] private SpriteRenderer _TierSprite;
-    [SerializeField] private GameObject _Offsprings;
+    [SerializeField] private EnemyScriptable _enemyInfo;
+    [SerializeField] private SpriteRenderer _tierSprite;
+    [SerializeField] private GameObject _offsprings;
 
-    public EnemyScriptable EnemyInfo { get { return _EnemyInfo; } }
-    public SpriteRenderer TierRenderer { get { return _TierSprite; } }
+    public EnemyScriptable EnemyInfo { get { return _enemyInfo; } }
+    public SpriteRenderer TierRenderer { get { return _tierSprite; } }
     public float MaxHealth { get; private set; }
     public float CurrentHealth { get; set; }
     public bool IsDrenched { get; set; }
@@ -25,15 +25,15 @@ public class SpawnerEnemy : EnemyBehaviour, IEnemy {
 
     public void Setup(float speed, Transform target, float health, int tier, GlobalDataHandler globalData)
     {
-        _Enemy = this;
+        _enemy = this;
         Startup();
-        _Speed = _EnemyInfo.SpeedMultiplier * speed;
-        _Player = target;
-        MaxHealth = _EnemyInfo.HealthMultiplier * health;
+        _speed = _enemyInfo.SpeedMultiplier * speed;
+        _player = target;
+        MaxHealth = _enemyInfo.HealthMultiplier * health;
         CurrentHealth = MaxHealth;
         Tier = tier;
         SetTierIcon();
-        _GlobalData = globalData;
+        _globalData = globalData;
     }
 
     public void Die()
@@ -41,18 +41,18 @@ public class SpawnerEnemy : EnemyBehaviour, IEnemy {
         if (CurrentHealth <= 0)
         {
             SpawnChildren();
-            _GlobalData.Points += _EnemyInfo.PointValue;
+            _globalData.AddPoints(_enemyInfo.PointValue);
         }
     }
 
     private void SpawnChildren()
     {
-        for (int i =0; i < _EnemyInfo.SpawnAmount; i++)
+        for (int i =0; i < _enemyInfo.SpawnAmount; i++)
         {
-            var temp = Instantiate(_Offsprings, transform.parent);
+            var temp = Instantiate(_offsprings, transform.parent);
             var angle = Random.Range(-1f, 1f);
             temp.transform.position = transform.position;
-            temp.GetComponent<IEnemy>().Setup(_Speed, _Player, MaxHealth, Tier, _GlobalData);
+            temp.GetComponent<IEnemy>().Setup(_speed, _player, MaxHealth, Tier, _globalData);
             temp.GetComponent<IEnemy>().KnockBack(10f, new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized);
             temp.GetComponent<IEnemy>().IsKnockedBack = true;
         }

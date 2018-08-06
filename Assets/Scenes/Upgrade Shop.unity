@@ -391,11 +391,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85454a66987f227489471187bb4d445b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpgradeValue: {fileID: 313000694}
-  _UpgradeCost: {fileID: 568859748}
-  _UpgradeButton: {fileID: 1291819734}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
-  _Stat: 4
+  _upgradeValueText: {fileID: 313000694}
+  _upgradeCostText: {fileID: 568859748}
+  _upgradeButton: {fileID: 1291819734}
+  _stat: 4
 --- !u!114 &119151913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2277,11 +2276,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85454a66987f227489471187bb4d445b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpgradeValue: {fileID: 2100170200}
-  _UpgradeCost: {fileID: 1426627429}
-  _UpgradeButton: {fileID: 906381467}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
-  _Stat: 3
+  _upgradeValueText: {fileID: 2100170200}
+  _upgradeCostText: {fileID: 701598709}
+  _upgradeButton: {fileID: 906381467}
+  _stat: 3
 --- !u!114 &1020598661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2553,11 +2551,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85454a66987f227489471187bb4d445b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpgradeValue: {fileID: 391698397}
-  _UpgradeCost: {fileID: 64345900}
-  _UpgradeButton: {fileID: 347302066}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
-  _Stat: 2
+  _upgradeValueText: {fileID: 391698397}
+  _upgradeCostText: {fileID: 1630383418}
+  _upgradeButton: {fileID: 347302066}
+  _stat: 2
 --- !u!114 &1133861173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3066,8 +3063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6a476e296253d4dbad804efe51cfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Points: {fileID: 1450903837}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
+  _pointsText: {fileID: 1450903837}
 --- !u!114 &1361949898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3620,11 +3616,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85454a66987f227489471187bb4d445b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpgradeValue: {fileID: 1018869442}
-  _UpgradeCost: {fileID: 1427057052}
-  _UpgradeButton: {fileID: 518685591}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
-  _Stat: 1
+  _upgradeValueText: {fileID: 1018869442}
+  _upgradeCostText: {fileID: 1427057052}
+  _upgradeButton: {fileID: 518685591}
+  _stat: 1
 --- !u!114 &1560846660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4284,11 +4279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85454a66987f227489471187bb4d445b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpgradeValue: {fileID: 868519909}
-  _UpgradeCost: {fileID: 18219357}
-  _UpgradeButton: {fileID: 1021827985}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
-  _Stat: 5
+  _upgradeValueText: {fileID: 868519909}
+  _upgradeCostText: {fileID: 18219357}
+  _upgradeButton: {fileID: 1021827985}
+  _stat: 5
 --- !u!114 &2025417045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4375,11 +4369,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85454a66987f227489471187bb4d445b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpgradeValue: {fileID: 1189336038}
-  _UpgradeCost: {fileID: 850935696}
-  _UpgradeButton: {fileID: 1710143055}
-  _WorldInfo: {fileID: 11400000, guid: fa8af417afd8d2e41be3a1cf3fa30191, type: 2}
-  _Stat: 0
+  _upgradeValueText: {fileID: 1189336038}
+  _upgradeCostText: {fileID: 451000783}
+  _upgradeButton: {fileID: 1710143055}
+  _stat: 0
 --- !u!114 &2040148633
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class Fireball : MonoBehaviour {
 
-    private float _Damage;
-    private float _Duration;
+    private float _damage;
+    private float _duration;
 
     public void Setup(float damage, float duration)
     {
-        _Damage = damage;
-        _Duration = duration + Time.time;
+        _damage = damage;
+        _duration = duration + Time.time;
     }
 
 	void Update () {
         transform.position += transform.up * Time.deltaTime * 10f;
-        if (_Duration <= Time.time) Destroy(transform.gameObject);
+        if (_duration <= Time.time) Destroy(transform.gameObject);
 	}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<IEnemy>().TakeDamage(_Damage);
+            collision.GetComponent<IEnemy>().TakeDamage(_damage);
         }
     }
 }

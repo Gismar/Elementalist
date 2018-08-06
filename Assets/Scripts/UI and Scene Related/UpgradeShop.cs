@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class UpgradeShop : MonoBehaviour {
 
-    [SerializeField] private Text _Points;
-    private GlobalDataHandler _GlobalData;
+    [SerializeField] private Text _pointsText;
+    private GlobalDataHandler _globalData;
 
-    void Start() => _GlobalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+    void Start() => _globalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
 
 	void Update () {
-        _Points.text = _GlobalData.Points.ToString("0 Ps");
+        _pointsText.text = _globalData.Points.ToString("0 Ps");
 	}
 
     public void ExitToMainMenu()

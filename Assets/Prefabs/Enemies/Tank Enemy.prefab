@@ -189,8 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064d81e43284290479e5c1b3d6bdf055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _EnemyInfo: {fileID: 11400000, guid: 37c8556606601df4b9e32a62b002b0a0, type: 2}
-  _TierSprite: {fileID: 212738608436602262}
+  _enemyInfo: {fileID: 11400000, guid: 37c8556606601df4b9e32a62b002b0a0, type: 2}
+  _tierSprite: {fileID: 212738608436602262}
 --- !u!212 &212134437024073410
 SpriteRenderer:
   m_ObjectHideFlags: 1

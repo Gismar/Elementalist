@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LightningOrb : OrbBehaviour, IOrb {
-    [SerializeField] private GameObject _beamPrefab;
-    [SerializeField] private LayerMask[] _Mask;
+    [SerializeField] private GameObject _mainAttackPrefab;
+    [SerializeField] private GameObject _secondaryAttackPrefab;
+    [SerializeField] private LayerMask[] _mask;
     private LineRenderer _aimLine;
 
     public float Damage { get; private set; }
@@ -13,39 +14,40 @@ public class LightningOrb : OrbBehaviour, IOrb {
 
     private void Start()
     {
-        _Orb = this;
-        transform.localScale = _GlobalData.OrbSize;
+        _orb = this;
+        transform.localScale = _globalData.OrbSize;
         _aimLine = GetComponent<LineRenderer>();
     }
 
+    #region Main Functionality
     public void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType)
     {
-        _Player = player;
-        _Offset = offset;
-        _GlobalData = globalData;
-        _IsIdle = isIdle;
-        _MainAttackTimers = mainTimers;
-        _SecondaryAttackTimers = secondTimers;
-        _OrbType = orbType;
+        _player = player;
+        _offset = offset;
+        _globalData = globalData;
+        _isIdle = isIdle;
+        _mainAttackTimers = mainTimers;
+        _secondaryAttackTimers = secondTimers;
+        _orbType = orbType;
         Startup();
     }
 
     public void SetIdle()
     {
-        _BeganAim = false;
-        _IsAttacking = false;
+        _beganAim = false;
+        _isAttacking = false;
         _aimLine.enabled = false;
     }
 
     public void ActivateAimLine()
     {
         _aimLine.enabled = true;
-        _BeganAim = true;
+        _beganAim = true;
     }
 
     public void UpdateAimLine()
     {
-        if (!_BeganAim) ActivateAimLine();
+        if (!_beganAim) ActivateAimLine();
         transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
     }
 
@@ -53,8 +55,8 @@ public class LightningOrb : OrbBehaviour, IOrb {
     {
         _aimLine.enabled = false;
         var mouseAngle = MouseAngle();
-        var temp = Instantiate(_beamPrefab);
-        temp.GetComponent<LightningOrbBeam>().Setup(_GlobalData.OrbDistance * 6f, 5f * _GlobalData.OrbDamage, transform);
+        var temp = Instantiate(_mainAttackPrefab);
+        temp.GetComponent<LightningOrbBeam>().Setup(_globalData.OrbDistance * 6f, 15f * _globalData.OrbDamage, transform);
         temp.transform.rotation = Quaternion.Euler(0, 0, mouseAngle);
         temp.transform.position = transform.position;
         transform.localScale = Vector2.zero;
@@ -62,49 +64,55 @@ public class LightningOrb : OrbBehaviour, IOrb {
 
     public void SecondaryAttack()
     {
-        Damage = _GlobalData.OrbDamage * 20f;
-        int count = Mathf.FloorToInt(_GlobalData.OrbDistance * 2f);
+        Damage = _globalData.OrbDamage * 20f;
+        int count = Mathf.FloorToInt(Mathf.Pow(_globalData.OrbDistance * 2f, 2f));
         List<IEnemy> enemiesHit = new List<IEnemy>();
-        var hit = Physics2D.OverlapCircle(transform.position, _GlobalData.OrbSize.x * 2f, _Mask[0]);
+        var hit = Physics2D.OverlapCircle(transform.position, _globalData.OrbSize.x * _globalData.OrbDistance, _mask[0]);
+        Vector3 prevPosition = transform.position;
         Debug.Log(hit);
         SetIdle();
         for (int i = 0; i < count; i++)
         {
             if (hit == null) return;
+            var temp = Instantiate(_secondaryAttackPrefab);
+            temp.transform.position = (hit.transform.position + prevPosition) / 2f;
+
+            Vector2 direction = (hit.transform.position - prevPosition).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            float radius = Vector3.Distance(hit.transform.position, prevPosition);
+            temp.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            temp.GetComponent<SpriteRenderer>().size = new Vector2(radius, 0.5f);
+            var shape = temp.GetComponent<ParticleSystem>().shape;
+            shape.radius = radius / 2f;
+
+            Destroy(temp, 1f);
             hit.GetComponent<IEnemy>().TakeDamage(Damage);
-            hit = Physics2D.OverlapCircle(hit.transform.position, _GlobalData.OrbSize.x * 2f, _Mask[0]);
+            prevPosition = hit.transform.position;
+            hit = Physics2D.OverlapCircle(hit.transform.position, _globalData.OrbSize.x * _globalData.OrbDistance, _mask[0]);
             Debug.Log(hit);
         }
-    }
-
-    public void KillOrbling(Vector3 pos)
-    {
-        transform.position = pos;
-        transform.localScale = _GlobalData.OrbSize;
-        SetIdle();
-
-        var orbHit = Physics2D.OverlapCircleAll(transform.position, _GlobalData.OrbSize.x / 2f, _Mask[1]);
-        Debug.Log(orbHit.Length);
-        if (orbHit.Length < 2) return;
-        Vector3 averagePos = Vector3.zero;
-        foreach (Collider2D hit in orbHit)
-        {
-            averagePos += hit.transform.position;
-        }
-        averagePos = Vector3.Distance(averagePos, transform.position) < 0.5f ? new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)) : averagePos / orbHit.Length;
-        transform.position += (transform.position - averagePos).normalized;
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
-            var orbHit = Physics2D.OverlapCircleAll(transform.position, _GlobalData.OrbSize.x, _Mask[0]);
+            var orbHit = Physics2D.OverlapCircleAll(transform.position, _globalData.OrbSize.x, _mask[0]);
             foreach (Collider2D hit in orbHit)
             {
                 hit.GetComponent<IEnemy>().TakeDamage(Damage / orbHit.Length);
             }
         }
     }
+    #endregion
+
+    #region Additional Functions
+    public void KillOrbling(Vector3 pos)
+    {
+        transform.position = pos;
+        transform.localScale = _globalData.OrbSize;
+        SetIdle();
+    }
+    #endregion
 }

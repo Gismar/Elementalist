@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FireOrb : OrbBehaviour, IOrb {
-    [SerializeField] private GameObject _LineHolder;
-    [SerializeField] private GameObject _Fireball;
-    [SerializeField] private GameObject _RingOfFire;
+    [SerializeField] private GameObject _lineHolder;
+    [SerializeField] private GameObject _fireball;
+    [SerializeField] private GameObject _ringOfFire;
 
     public float Damage { get; private set; }
     public float MainAttackDelay { get; private set; } = 1f;
@@ -14,73 +14,57 @@ public class FireOrb : OrbBehaviour, IOrb {
 
     void Start()
     {
-        transform.localScale = _GlobalData.OrbSize;
-        _Orb = this;
-        _LineHolder = transform.GetChild(0).gameObject;
+        transform.localScale = _globalData.OrbSize;
+        _orb = this;
+        _lineHolder = transform.GetChild(0).gameObject;
     }
 
+    #region Main Functionality
     public void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType)
     {
-        _Player = player;
-        _Offset = offset;
-        _GlobalData = globalData;
-        _IsIdle = isIdle;
-        _MainAttackTimers = mainTimers;
-        _SecondaryAttackTimers = secondTimers;
-        _OrbType = orbType;
+        _player = player;
+        _offset = offset;
+        _globalData = globalData;
+        _isIdle = isIdle;
+        _mainAttackTimers = mainTimers;
+        _secondaryAttackTimers = secondTimers;
+        _orbType = orbType;
         Startup();
     }
 
     public void SetIdle()
     {
-        _BeganAim = false;
-        _IsAttacking = false;
-        _LineHolder.SetActive(false);
+        _beganAim = false;
+        _isAttacking = false;
+        _lineHolder.SetActive(false);
     }
 
     public void MainAttack()
     {
-        _IsAttacking = false;
-        _LineHolder.SetActive(false);
-        Damage = 20 * _GlobalData.OrbDamage;
+        _isAttacking = false;
+        _lineHolder.SetActive(false);
+        Damage = 20 * _globalData.OrbDamage;
         CreateFireball(MouseAngle());
         CreateFireball(MouseAngle() - 180f);
     }
 
     public void SecondaryAttack()
     {
-        _IsAttacking = false;
-        Damage = 25 * _GlobalData.OrbDamage;
+        _isAttacking = false;
+        Damage = 25 * _globalData.OrbDamage;
         CreateRingOfFire();
     }
 
     public void ActivateAimLine()
     {
-        _LineHolder.SetActive(true);
-        _BeganAim = true;
+        _lineHolder.SetActive(true);
+        _beganAim = true;
     }
 
     public void UpdateAimLine()
     {
-        if (!_BeganAim) ActivateAimLine();
-        _LineHolder.transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
-    }
-
-    private void CreateFireball(float rotation)
-    {
-        var temp = Instantiate(_Fireball);
-        temp.transform.position = transform.position;
-        temp.transform.localScale = _GlobalData.OrbSize;
-        temp.transform.rotation = Quaternion.Euler(0, 0, rotation);
-        temp.GetComponent<Fireball>().Setup(Damage, _GlobalData.OrbDistance);
-    }
-
-    private void CreateRingOfFire()
-    {
-        var temp = Instantiate(_RingOfFire);
-        temp.transform.position = transform.position;
-        temp.transform.localScale = _GlobalData.OrbSize;
-        temp.GetComponent<FireRing>().Setup(Damage, _GlobalData.OrbDistance);
+        if (!_beganAim) ActivateAimLine();
+        _lineHolder.transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -90,4 +74,24 @@ public class FireOrb : OrbBehaviour, IOrb {
             collision.GetComponent<IEnemy>().TakeDamage(5 * Time.deltaTime);
         }
     }
+    #endregion
+
+    #region Additional Features
+    private void CreateFireball(float rotation)
+    {
+        var temp = Instantiate(_fireball);
+        temp.transform.position = transform.position;
+        temp.transform.localScale = _globalData.OrbSize;
+        temp.transform.rotation = Quaternion.Euler(0, 0, rotation);
+        temp.GetComponent<Fireball>().Setup(Damage, _globalData.OrbDistance);
+    }
+
+    private void CreateRingOfFire()
+    {
+        var temp = Instantiate(_ringOfFire);
+        temp.transform.position = transform.position;
+        temp.transform.localScale = _globalData.OrbSize;
+        temp.GetComponent<FireRing>().Setup(Damage, _globalData.OrbDistance);
+    }
+    #endregion
 }

@@ -5,7 +5,8 @@ using UnityEngine;
 public class LightningOrbBeam : MonoBehaviour {
 
     private float _y;
-    private float _speed = 10f;
+    private float _yLerp;
+    private float _speed = 2f;
     [SerializeField] private Transform _leftOrb;
     [SerializeField] private Transform _rightOrb;
     [SerializeField] private Transform _orbPos;
@@ -24,7 +25,8 @@ public class LightningOrbBeam : MonoBehaviour {
     }
 
 	void Update () {
-        _y += Time.deltaTime * _speed;
+        _yLerp += Time.deltaTime * _speed;
+        _y = Mathf.Lerp(0, _distance, _yLerp);
         transform.position = transform.up * _y + _orbPos.position;
         _rightOrb.position = (transform.right * _y /2f) + transform.up * _y + _orbPos.position;
         _leftOrb.position = (-transform.right * _y /2f) + transform.up * _y + _orbPos.position;
@@ -38,7 +40,7 @@ public class LightningOrbBeam : MonoBehaviour {
         }
 	}
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {

@@ -21,7 +21,9 @@ public class GlobalDataHandler : MonoBehaviour {
     public KeyCode Swap = KeyCode.Q;
 
     public int Points = 1000000;
-    public int HighestTime;
+    public int PointsMultiplier = 1;
+    public int HighestMinute;
+    public int SurvivalTime;
 
     public enum Stats
     {
@@ -49,9 +51,19 @@ public class GlobalDataHandler : MonoBehaviour {
         Points -= amount;
     }
 
+    public void AddPoints(int amount)
+    {
+        Points += amount * PointsMultiplier;
+    }
+
     private void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
         SceneManager.LoadScene("Main Menu");
+    }
+
+    public void CheckScore()
+    {
+        if (SurvivalTime > HighestMinute) HighestMinute = Mathf.FloorToInt(Time.timeSinceLevelLoad);
     }
 }
