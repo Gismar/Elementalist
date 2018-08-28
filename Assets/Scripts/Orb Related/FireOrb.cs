@@ -2,69 +2,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireOrb : OrbBehaviour, IOrb {
+public class FireOrb : OrbBehaviour{
     [SerializeField] private GameObject _lineHolder;
     [SerializeField] private GameObject _fireball;
     [SerializeField] private GameObject _ringOfFire;
-
-    public float Damage { get; private set; }
-    public float MainAttackDelay { get; private set; } = 1f;
-    public float SecondaryAttackDelay { get; private set; } = 5f;
+    
+    protected override float _damage { get; set; }
+    protected override float _mainAttackDelay { get; } = 1f;
+    protected override float _secondaryAttackDelay { get; } = 5f;
 
 
     void Start()
     {
-        transform.localScale = _globalData.OrbSize;
-        _orb = this;
         _lineHolder = transform.GetChild(0).gameObject;
     }
 
-    #region Main Functionality
-    public void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType)
+    protected override void Setup(OrbSetup orbSetup)
     {
-        _player = player;
-        _offset = offset;
-        _globalData = globalData;
-        _isIdle = isIdle;
-        _mainAttackTimers = mainTimers;
-        _secondaryAttackTimers = secondTimers;
-        _orbType = orbType;
+        _decay = orbSetup.Decay;
+        _player = orbSetup.Player;
+        _globalData = orbSetup.GlobalData;
+        _state = orbSetup.OrbState;
+        _mainAttackTimers = orbSetup.MainAttackTimers;
+        _secondaryAttackTimers = orbSetup.SecondaryAttackTimers;
+        _orbType = orbSetup.OrbType;
         Startup();
     }
 
-    public void SetIdle()
+    protected override void MainAttack()
     {
-        _beganAim = false;
-        _isAttacking = false;
+        _state = State.Idling;
         _lineHolder.SetActive(false);
-    }
-
-    public void MainAttack()
-    {
-        _isAttacking = false;
-        _lineHolder.SetActive(false);
-        Damage = 20 * _globalData.OrbDamage;
+        _damage = 20 * _globalData.OrbDamage;
         CreateFireball(MouseAngle());
         CreateFireball(MouseAngle() - 180f);
     }
 
-    public void SecondaryAttack()
+    protected override void SecondaryAttack()
     {
-        _isAttacking = false;
-        Damage = 25 * _globalData.OrbDamage;
+        _damage = 25 * _globalData.OrbDamage;
         CreateRingOfFire();
     }
 
-    public void ActivateAimLine()
+    protected override void UpdateAimLine()
     {
         _lineHolder.SetActive(true);
-        _beganAim = true;
-    }
-
-    public void UpdateAimLine()
-    {
-        if (!_beganAim) ActivateAimLine();
         _lineHolder.transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
+        var children = _lineHolder.GetComponentsInChildren<LineRenderer>();
+        children[0].startWidth = transform.localScale.x;
+        children[1].startWidth = transform.localScale.x;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -74,24 +60,21 @@ public class FireOrb : OrbBehaviour, IOrb {
             collision.GetComponent<IEnemy>().TakeDamage(5 * Time.deltaTime);
         }
     }
-    #endregion
-
-    #region Additional Features
+    
     private void CreateFireball(float rotation)
     {
         var temp = Instantiate(_fireball);
         temp.transform.position = transform.position;
-        temp.transform.localScale = _globalData.OrbSize;
+        temp.transform.localScale = transform.localScale;
         temp.transform.rotation = Quaternion.Euler(0, 0, rotation);
-        temp.GetComponent<Fireball>().Setup(Damage, _globalData.OrbDistance);
+        temp.GetComponent<Fireball>().Setup(_damage, _globalData.OrbDistance * Mathf.Min(transform.localScale.x, 1f));
     }
 
     private void CreateRingOfFire()
     {
         var temp = Instantiate(_ringOfFire);
         temp.transform.position = transform.position;
-        temp.transform.localScale = _globalData.OrbSize;
-        temp.GetComponent<FireRing>().Setup(Damage, _globalData.OrbDistance);
+        temp.transform.localScale = transform.localScale;
+        temp.GetComponent<FireRing>().Setup(_damage, _globalData.OrbDistance * Mathf.Min(transform.localScale.x, 1f));
     }
-    #endregion
 }

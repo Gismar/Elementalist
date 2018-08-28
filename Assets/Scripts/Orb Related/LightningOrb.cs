@@ -2,75 +2,61 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningOrb : OrbBehaviour, IOrb {
+public class LightningOrb : OrbBehaviour{
     [SerializeField] private GameObject _mainAttackPrefab;
     [SerializeField] private GameObject _secondaryAttackPrefab;
     [SerializeField] private LayerMask[] _mask;
     private LineRenderer _aimLine;
+    private Vector2 _originalSize;
 
-    public float Damage { get; private set; }
-    public float MainAttackDelay { get; private set; } = 0.5f;
-    public float SecondaryAttackDelay { get; private set; } = 3f;
+    protected override float _damage { get; set; }
+    protected override float _mainAttackDelay { get; } = 0.5f;
+    protected override float _secondaryAttackDelay { get; } = 3f;
 
     private void Start()
     {
-        _orb = this;
-        transform.localScale = _globalData.OrbSize;
         _aimLine = GetComponent<LineRenderer>();
     }
-
-    #region Main Functionality
-    public void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType)
+    
+    protected override void Setup(OrbSetup orbSetup)
     {
-        _player = player;
-        _offset = offset;
-        _globalData = globalData;
-        _isIdle = isIdle;
-        _mainAttackTimers = mainTimers;
-        _secondaryAttackTimers = secondTimers;
-        _orbType = orbType;
+        _decay = orbSetup.Decay;
+        _player = orbSetup.Player;
+        _globalData = orbSetup.GlobalData;
+        _state = orbSetup.OrbState;
+        _mainAttackTimers = orbSetup.MainAttackTimers;
+        _secondaryAttackTimers = orbSetup.SecondaryAttackTimers;
+        _orbType = orbSetup.OrbType;
         Startup();
     }
 
-    public void SetIdle()
-    {
-        _beganAim = false;
-        _isAttacking = false;
-        _aimLine.enabled = false;
-    }
-
-    public void ActivateAimLine()
+    protected override void UpdateAimLine()
     {
         _aimLine.enabled = true;
-        _beganAim = true;
-    }
-
-    public void UpdateAimLine()
-    {
-        if (!_beganAim) ActivateAimLine();
         transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
+        _aimLine.endWidth = transform.localScale.x * _aimLine.widthMultiplier;
     }
 
-    public void MainAttack()
+    protected override void MainAttack()
     {
         _aimLine.enabled = false;
         var mouseAngle = MouseAngle();
         var temp = Instantiate(_mainAttackPrefab);
-        temp.GetComponent<LightningOrbBeam>().Setup(_globalData.OrbDistance * 6f, 15f * _globalData.OrbDamage, transform);
+        temp.GetComponent<LightningOrbBeam>().Setup(_globalData.OrbDistance * 6f * Mathf.Min(transform.localScale.x, 1f), 15f * _globalData.OrbDamage, transform);
         temp.transform.rotation = Quaternion.Euler(0, 0, mouseAngle);
         temp.transform.position = transform.position;
+        _originalSize = transform.localScale;
         transform.localScale = Vector2.zero;
     }
 
-    public void SecondaryAttack()
+    protected override void SecondaryAttack()
     {
-        Damage = _globalData.OrbDamage * 20f;
+        _damage = _globalData.OrbDamage * 20f;
         int count = Mathf.FloorToInt(Mathf.Pow(_globalData.OrbDistance * 2f, 2f));
         List<IEnemy> enemiesHit = new List<IEnemy>();
-        var hit = Physics2D.OverlapCircle(transform.position, _globalData.OrbSize.x * _globalData.OrbDistance, _mask[0]);
+        var hit = Physics2D.OverlapCircle(transform.position, transform.localScale.x * _globalData.OrbDistance * 3f, _mask[0]);
         Vector3 prevPosition = transform.position;
         Debug.Log(hit);
-        SetIdle();
         for (int i = 0; i < count; i++)
         {
             if (hit == null) return;
@@ -87,9 +73,9 @@ public class LightningOrb : OrbBehaviour, IOrb {
             shape.radius = radius / 2f;
 
             Destroy(temp, 1f);
-            hit.GetComponent<IEnemy>().TakeDamage(Damage);
+            hit.GetComponent<IEnemy>().TakeDamage(_damage);
             prevPosition = hit.transform.position;
-            hit = Physics2D.OverlapCircle(hit.transform.position, _globalData.OrbSize.x * _globalData.OrbDistance, _mask[0]);
+            hit = Physics2D.OverlapCircle(hit.transform.position, transform.localScale.x * _globalData.OrbDistance, _mask[0]);
             Debug.Log(hit);
         }
     }
@@ -98,21 +84,18 @@ public class LightningOrb : OrbBehaviour, IOrb {
     {
         if (collision.CompareTag("Enemy"))
         {
-            var orbHit = Physics2D.OverlapCircleAll(transform.position, _globalData.OrbSize.x, _mask[0]);
+            var orbHit = Physics2D.OverlapCircleAll(transform.position, transform.localScale.x, _mask[0]);
             foreach (Collider2D hit in orbHit)
             {
-                hit.GetComponent<IEnemy>().TakeDamage(Damage / orbHit.Length);
+                hit.GetComponent<IEnemy>().TakeDamage(_damage / orbHit.Length);
             }
         }
     }
-    #endregion
 
-    #region Additional Functions
     public void KillOrbling(Vector3 pos)
     {
         transform.position = pos;
-        transform.localScale = _globalData.OrbSize;
-        SetIdle();
+        transform.localScale = _originalSize;
+        _state = State.Idling;
     }
-    #endregion
 }

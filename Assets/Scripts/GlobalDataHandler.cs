@@ -13,19 +13,12 @@ public class GlobalDataHandler : MonoBehaviour {
     public int PlayerMaxHealth = 10;
     public float PlayerSpeed = 5f;
 
-    public KeyCode Up = KeyCode.W;
-    public KeyCode Down = KeyCode.S;
-    public KeyCode Left = KeyCode.A;
-    public KeyCode Right = KeyCode.D;
-    public KeyCode Recall = KeyCode.Space;
-    public KeyCode Swap = KeyCode.Q;
-
     public int Points = 1000000;
     public int PointsMultiplier = 1;
     public int HighestMinute;
     public int SurvivalTime;
 
-    public enum Stats
+    public enum Stat
     {
         OrbDistance,
         OrbDamage,
@@ -35,15 +28,37 @@ public class GlobalDataHandler : MonoBehaviour {
         PlayerSpeed
     }
 
-    public Dictionary<Stats, IUpgradeable> StatDictionary =
-        new Dictionary<Stats, IUpgradeable>
+    public enum Key
+    {
+        Up, Down, Left, Right,
+        Recall,
+        Water, Fire, Lightning, Earth, Air
+    }
+
+    public Dictionary<Key, KeyCode> Keys =
+        new Dictionary<Key, KeyCode>
         {
-            {Stats.OrbDamage, new OrbDamage() },
-            {Stats.OrbSize, new OrbSize() },
-            {Stats.OrbDelay, new OrbDelay() },
-            {Stats.OrbDistance, new OrbDistance() },
-            {Stats.PlayerMaxHealth, new PlayerMaxHealth() },
-            {Stats.PlayerSpeed, new PlayerSpeed() }
+            [Key.Up] = KeyCode.W,
+            [Key.Down] = KeyCode.S,
+            [Key.Left] = KeyCode.A,
+            [Key.Right] = KeyCode.D,
+            [Key.Recall] = KeyCode.Space,
+            [Key.Water] = KeyCode.Q,
+            [Key.Fire] = KeyCode.E,
+            [Key.Lightning] = KeyCode.R,
+            [Key.Earth] = KeyCode.F,
+            [Key.Air] = KeyCode.V
+        };
+
+    public Dictionary<Stat, IUpgradeable> StatDictionary =
+        new Dictionary<Stat, IUpgradeable>
+        {
+            {Stat.OrbDamage, new OrbDamage() },
+            {Stat.OrbSize, new OrbSize() },
+            {Stat.OrbDelay, new OrbDelay() },
+            {Stat.OrbDistance, new OrbDistance() },
+            {Stat.PlayerMaxHealth, new PlayerMaxHealth() },
+            {Stat.PlayerSpeed, new PlayerSpeed() }
         };
 
     public void UsePoints(int amount)

@@ -8,7 +8,7 @@ public class Upgrade : MonoBehaviour {
     [SerializeField] private Text _upgradeValueText;
     [SerializeField] private Text _upgradeCostText;
     [SerializeField] private Button _upgradeButton;
-    [SerializeField] private GlobalDataHandler.Stats _stat;
+    [SerializeField] private GlobalDataHandler.Stat _stat;
     private GlobalDataHandler _globalData;
 
     private void Start()

@@ -3,68 +3,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaterOrb : OrbBehaviour, IOrb {
-
-    [SerializeField] private BoxCollider2D _collider;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private LineRenderer _aimLine;
-    [SerializeField] private LayerMask[] _mask;
+public class WaterOrb : OrbBehaviour{
+    [SerializeField] private LayerMask _mask;
+    private BoxCollider2D _collider;
+    private Animator _animator;
+    private LineRenderer _aimLine;
     private Rigidbody2D _rigidBody;
     private float _distance;
+    private AnimationCurve _movementCurve;
+    
+    protected override float _damage { get; set; }
+    protected override float _mainAttackDelay { get; } = 0.5f;
+    protected override float _secondaryAttackDelay { get; } = 2f;
 
-    public float Damage { get; private set; }
-    public float MainAttackDelay { get; private set; } = 0.5f;
-    public float SecondaryAttackDelay { get; private set; } = 2f;
-
-	void Start () {
+    void Start () {
         _collider = GetComponent<BoxCollider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        transform.localScale = _globalData.OrbSize;
-        _orb = this;
         _aimLine = GetComponent<LineRenderer>();
 	}
-
-    #region Main Functionality
-    public void Setup(Vector2 offset, Transform player, GlobalDataHandler globalData, bool isIdle, float[] mainTimers, float[] secondTimers, int orbType)
+    
+    protected override void Setup(OrbSetup orbSetup)
     {
-        _player = player;
-        _offset = offset;
-        _globalData = globalData;
-        _isIdle = isIdle;
-        _mainAttackTimers = mainTimers;
-        _secondaryAttackTimers = secondTimers;
-        _orbType = orbType;
-        Damage = 5;
+        _decay = orbSetup.Decay;
+        _player = orbSetup.Player;
+        _globalData = orbSetup.GlobalData;
+        _state = orbSetup.OrbState;
+        _mainAttackTimers = orbSetup.MainAttackTimers;
+        _secondaryAttackTimers = orbSetup.SecondaryAttackTimers;
+        _orbType = orbSetup.OrbType;
+        _damage = 5;
         Startup();
     }
 
-    public void SetIdle()
-    {
-        Damage = 5;
-        _beganAim = false;
-        _isAttacking = false;
-        _aimLine.enabled = false;
-    }
-
-    public void MainAttack()
+    protected override void MainAttack()
     {
         UpdateAimLine();
         GetComponent<LineRenderer>().enabled = false;
-        Damage = 15 * _globalData.OrbDamage;
+        _damage = 15 * _globalData.OrbDamage;
         transform.position += transform.up;
-        _distance -= 1f;
+        _movementCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, _distance / 6f));
         ResetCollider();
         _animator.SetTrigger("Move");
     }
 
-    public void SecondaryAttack()
+    protected override void SecondaryAttack()
     {
-        _aimLine.enabled = false;
-        Damage = 20 * _globalData.OrbDamage;
+        _damage = 20 * _globalData.OrbDamage;
         ResetCollider();
         _animator.SetTrigger("Pull");
-        var enemiesHit = Physics2D.OverlapCircleAll(transform.position, 2f * _globalData.OrbSize.x, _mask[0]);
+        var enemiesHit = Physics2D.OverlapCircleAll(transform.position, 2f * transform.localScale.x, _mask);
         foreach (Collider2D hit in enemiesHit)
         {
             hit.GetComponent<IEnemy>().KnockBack(5f * Vector3.Distance(transform.position, hit.transform.position), 
@@ -72,18 +60,14 @@ public class WaterOrb : OrbBehaviour, IOrb {
         }
     }
 
-    public void ActivateAimLine()
-    {
-        _aimLine.enabled = true;
-        _aimLine.SetPosition(1, new Vector3(0, _distance, 0));
-    }
-
-    public void UpdateAimLine()
+    protected override void UpdateAimLine()
     {
         transform.rotation = Quaternion.Euler(0, 0, MouseAngle());
         _distance = Mathf.Clamp(MouseDistance(), 2f, _globalData.OrbDistance * 5f);
-        if (!_beganAim) ActivateAimLine();
+
+        _aimLine.enabled = true;
         _aimLine.SetPosition(1, new Vector3(0, _distance / _globalData.OrbSize.x, 0));
+        _aimLine.startWidth = transform.localScale.x;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -91,12 +75,10 @@ public class WaterOrb : OrbBehaviour, IOrb {
         if (collision.CompareTag("Enemy"))
         {
             var enemy = collision.GetComponent<IEnemy>();
-            enemy.TakeDamage(Damage);
+            enemy.TakeDamage(_damage);
         }
     }
-    #endregion
-
-    #region Additional Functions
+    
     private void ResetCollider()
     {
         _collider.size = new Vector2(0, 0);
@@ -110,38 +92,14 @@ public class WaterOrb : OrbBehaviour, IOrb {
         _collider.size = new Vector2(sizes[1], sizes[2]);
     }
 
-    public void Move(float gap)
+    public void Move(float time)
     {
-        transform.position += transform.up * gap * _distance / 4f;
-    }
-
-    public void Reposition()
-    {
-        var orbHit = Physics2D.OverlapCircleAll(transform.position, _globalData.OrbSize.x/2f, _mask[1]);
-        if (orbHit.Length < 2) return;
-        Vector3 averagePos = Vector3.zero;
-        foreach( Collider2D hit in orbHit)
-        {
-            averagePos += hit.transform.position;
-        }
-        averagePos = Vector3.Distance(averagePos, transform.position) < 0.5f ? new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)) : averagePos / orbHit.Length;
-        _rigidBody.velocity = (transform.position - averagePos).normalized * 10f;
-        StartCoroutine(Knockback());
-    }
-
-    private IEnumerator Knockback()
-    {
-        while (_rigidBody.velocity.magnitude != 0)
-        {
-            _rigidBody.velocity = _rigidBody.velocity.magnitude >= 0.1f ? _rigidBody.velocity * 0.9f : Vector2.zero;
-            yield return null;
-        }
+        transform.position += transform.up * _movementCurve.Evaluate(time);
     }
 
     public void CanAttack()
     {
-        Damage = 10;
-        _isAttacking = false;
+        _damage = 10;
+        _state = State.Idling;
     }
-    #endregion
 }

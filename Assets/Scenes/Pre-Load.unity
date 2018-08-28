@@ -153,7 +153,9 @@ MonoBehaviour:
   Recall: 32
   Swap: 113
   Points: 0
-  HighestTime: 0
+  PointsMultiplier: 1
+  HighestMinute: 0
+  SurvivalTime: 0
 --- !u!4 &2075684222
 Transform:
   m_ObjectHideFlags: 0

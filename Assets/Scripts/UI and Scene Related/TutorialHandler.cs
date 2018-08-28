@@ -15,37 +15,19 @@ public class TutorialHandler : MonoBehaviour {
     {
         _globalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
         SwitchPanels();
-        _inputs[0].text = _globalData.Up.ToString();
-        _inputs[1].text = _globalData.Down.ToString();
-        _inputs[2].text = _globalData.Left.ToString();
-        _inputs[3].text = _globalData.Right.ToString();
-        _inputs[4].text = _globalData.Swap.ToString();
+        for (int i = 0; i < _inputs.Length; i++)
+        {
+            if (i == 4) continue;
+            _inputs[i].text = _globalData.Keys[(GlobalDataHandler.Key)i].ToString();
+        }
+        
     }
 
-    public void ChangeUpKey()
+    public void ChangeKey(int index)
     {
-        _inputs[0].text = _inputs[0].text.ToUpper();
-        _globalData.Up = (KeyCode)System.Enum.Parse(typeof(KeyCode), _inputs[0].text);
-    }
-    public void ChangeDownKey()
-    {
-        _inputs[1].text = _inputs[1].text.ToUpper();
-        _globalData.Down = (KeyCode)System.Enum.Parse(typeof(KeyCode), _inputs[1].text);
-    }
-    public void ChangeLeftKey()
-    {
-        _inputs[2].text = _inputs[2].text.ToUpper();
-        _globalData.Left = (KeyCode)System.Enum.Parse(typeof(KeyCode), _inputs[2].text);
-    }
-    public void ChangeRightKey()
-    {
-        _inputs[3].text = _inputs[3].text.ToUpper();
-        _globalData.Right = (KeyCode)System.Enum.Parse(typeof(KeyCode), _inputs[3].text);
-    }
-    public void ChangeSwapKey()
-    {
-        _inputs[4].text = _inputs[4].text.ToUpper();
-        _globalData.Swap = (KeyCode)System.Enum.Parse(typeof(KeyCode), _inputs[4].text);
+        _inputs[index].text = _inputs[index].text.ToUpper();
+        Debug.Log($"Index: {index}, text{_inputs[index].text}");
+        _globalData.Keys[(GlobalDataHandler.Key) index] = (KeyCode)System.Enum.Parse(typeof(KeyCode), _inputs[index].text);
     }
 
     public void SwitchPanels()

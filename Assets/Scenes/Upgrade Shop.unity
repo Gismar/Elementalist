@@ -2277,7 +2277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _upgradeValueText: {fileID: 2100170200}
-  _upgradeCostText: {fileID: 701598709}
+  _upgradeCostText: {fileID: 1426627429}
   _upgradeButton: {fileID: 906381467}
   _stat: 3
 --- !u!114 &1020598661
@@ -2552,7 +2552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _upgradeValueText: {fileID: 391698397}
-  _upgradeCostText: {fileID: 1630383418}
+  _upgradeCostText: {fileID: 64345900}
   _upgradeButton: {fileID: 347302066}
   _stat: 2
 --- !u!114 &1133861173
@@ -4370,7 +4370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _upgradeValueText: {fileID: 1189336038}
-  _upgradeCostText: {fileID: 451000783}
+  _upgradeCostText: {fileID: 850935696}
   _upgradeButton: {fileID: 1710143055}
   _stat: 0
 --- !u!114 &2040148633
