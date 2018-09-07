@@ -49,6 +49,6 @@ MonoBehaviour:
   - {fileID: 21300008, guid: 317e43dacbb16fc47a44bb863410b5c0, type: 3}
   SpeedMultiplier: 1
   HealthMultiplier: 0.5
-  StartingSpawnTime: 0
+  StartingSpawnTime: 90
   SpawnAmount: 0
   PointValue: 5

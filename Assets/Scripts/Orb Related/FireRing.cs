@@ -1,29 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class FireRing : MonoBehaviour {
-
-    private float _damage;
-    private float _duration;
-
-    public void Setup(float damage, float duration)
+namespace Orb
+{
+    public class FireRing : MonoBehaviour
     {
-        _damage = damage;
-        _duration = duration + Time.time;
-    }
+        private float _damage;
+        private float _duration;
 
-    void Update () {
-        transform.Rotate(new Vector3(0,0,15));
-        transform.localScale += new Vector3(0.1f, 0.1f, 0);
-        if (_duration <= Time.time) Destroy(transform.gameObject);
-	}
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
+        public void Setup(float damage, float duration)
         {
-            collision.GetComponent<IEnemy>().TakeDamage(_damage * Time.deltaTime);
+            _damage = damage;
+            _duration = duration + Time.time;
+        }
+
+        void Update()
+        {
+            transform.Rotate(new Vector3(0, 0, 15));
+            transform.localScale += new Vector3(0.1f, 0.1f, 0);
+            if (_duration <= Time.time) Destroy(transform.gameObject);
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Enemy"))
+            {
+                collision.GetComponent<Enemy.EnemyBehaviour>().TakeDamage(_damage * Time.deltaTime);
+            }
         }
     }
 }

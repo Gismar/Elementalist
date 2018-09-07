@@ -1,25 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Earthquake : MonoBehaviour {
-
-    private float _strength;
-
-    public void Setup(float strength, float duration)
+namespace Orb
+{
+    public class Earthquake : MonoBehaviour
     {
-        _strength = strength;
-        Destroy(transform.gameObject, duration);
-    }
+        private float _strength;
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
+        public void Setup(float strength, float duration)
         {
-            var enemy = collision.GetComponent<IEnemy>();
-            enemy.IsSlowed = true;
-            enemy.SlowStrength = _strength;
-            enemy.SlowDuration = Time.time + 1f;
+            _strength = strength;
+            Destroy(transform.gameObject, duration);
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Enemy"))
+            {
+                var enemy = collision.GetComponent<Enemy.EnemyBehaviour>();
+                enemy.Debuffs[DebuffType.Slow].IsAffected = true;
+                enemy.Debuffs[DebuffType.Slow].Strength = _strength;
+                enemy.Debuffs[DebuffType.Slow].Duration = Time.time + 1f;
+            }
         }
     }
 }

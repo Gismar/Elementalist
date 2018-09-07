@@ -1,25 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EarthSplit : MonoBehaviour {
-
-    private float _damage;
-
-    public void Setup(float damage, float duration)
+namespace Orb
+{
+    public class EarthSplit : MonoBehaviour
     {
-        _damage = damage;
-        Destroy(transform.gameObject, duration);
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
+        private float _damage;
+
+        public void Setup(float damage, float duration)
         {
-            var enemy = collision.GetComponent<IEnemy>();
-            enemy.TakeDamage(_damage);
-            enemy.IsStunned = true;
-            enemy.StunDuration = Time.time + 1f;
+            _damage = damage;
+            Destroy(transform.gameObject, duration);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Enemy"))
+            {
+                var enemy = collision.GetComponent<Enemy.EnemyBehaviour>();
+                enemy.TakeDamage(_damage);
+                enemy.Debuffs[DebuffType.Stun].IsAffected = true;
+                enemy.Debuffs[DebuffType.Slow].Duration = Time.time + 1f;
+            }
         }
     }
 }

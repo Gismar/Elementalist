@@ -1,31 +1,35 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class UpgradeShop : MonoBehaviour {
-
-    [SerializeField] private Text _pointsText;
-    private GlobalDataHandler _globalData;
-
-    void Start() => _globalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
-
-	void Update () {
-        _pointsText.text = _globalData.Points.ToString("0 Ps");
-	}
-
-    public void ExitToMainMenu()
+namespace UI
+{
+    public class UpgradeShop : MonoBehaviour
     {
-        StartCoroutine(LoadMainMenu());
-    }
 
-    private IEnumerator LoadMainMenu()
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Main Menu");
-        while (!asyncLoad.isDone)
+        [SerializeField] private Text _pointsText;
+        private GlobalDataHandler _globalData;
+
+        void Start() => _globalData = GameObject.FindGameObjectWithTag("Global").GetComponent<GlobalDataHandler>();
+
+        void Update()
         {
-            yield return null;
+            _pointsText.text = _globalData.Points.ToString("0 Ps");
+        }
+
+        public void ExitToMainMenu()
+        {
+            StartCoroutine(LoadMainMenu());
+        }
+
+        private IEnumerator LoadMainMenu()
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Main Menu");
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
         }
     }
 }

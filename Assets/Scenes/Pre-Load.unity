@@ -146,12 +146,6 @@ MonoBehaviour:
   OrbDistance: 1
   PlayerMaxHealth: 10
   PlayerSpeed: 5
-  Up: 119
-  Down: 115
-  Left: 97
-  Right: 100
-  Recall: 32
-  Swap: 113
   Points: 0
   PointsMultiplier: 1
   HighestMinute: 0
