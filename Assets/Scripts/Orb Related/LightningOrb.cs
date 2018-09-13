@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Enemy;
+using Elementalist.Enemy;
 
-namespace Orb
+namespace Elementalist.Orb
 {
     public class LightningOrb : OrbBehaviour
     {

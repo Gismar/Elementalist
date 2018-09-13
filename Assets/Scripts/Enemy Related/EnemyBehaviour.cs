@@ -1,12 +1,10 @@
-﻿using BeardedManStudios.Forge.Networking.Generated;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Elementalist.StatusEffect;
 
-namespace Enemy
+namespace Elementalist.Enemy
 {
-    public abstract class EnemyBehaviour : EnemyNetworkingBehavior
+    public abstract class EnemyBehaviour : MonoBehaviour
     {
         public abstract void Setup(EnemySetup enemySetup);
         protected abstract void Die();
@@ -29,8 +27,6 @@ namespace Enemy
 
         protected void Startup()
         {
-            base.NetworkStart();
-
             _rigidBody = GetComponent<Rigidbody2D>();
             _invincibleColor = new Color(EnemyInfo.BaseColor.r, EnemyInfo.BaseColor.g, EnemyInfo.BaseColor.b, 0.25f);
             Buffs = new Dictionary<BuffType, Buff>();
@@ -39,37 +35,11 @@ namespace Enemy
             CreateKnockback();
             CreateSlow();
             CreateStun();
-            UpdateToNetworkObject();
-        }
-
-        private void UpdateToNetworkObject()
-        {
-            networkObject.Position = transform.position;
-            networkObject.Rotation = transform.rotation;
-            networkObject.Color = GetComponent<SpriteRenderer>().color;
-            networkObject.Health = CurrentHealth;
-        }
-
-        private void UpdateFromNetworkObject()
-        {
-            transform.position = networkObject.Position;
-            transform.rotation = networkObject.Rotation;
-            GetComponent<SpriteRenderer>().color = networkObject.Color;
-            CurrentHealth = networkObject.Health;
         }
 
         private void Update()
         {
-            if (!networkObject.IsServer)
-            {
-                UpdateFromNetworkObject();
-                return;
-            }
-
-            UpdateToNetworkObject();
-            UpdateColor();
-
-            //Apply Buffs and Debuffs
+            //Apply Buffs and Debuffs In Order
             Buffs[BuffType.Invinciblity].EffectMethod();
             if (Debuffs[DebuffType.Stun].EffectMethod() == 1f)
                 return;
@@ -99,11 +69,6 @@ namespace Enemy
             Die();
         }
 
-        public void UpdateColor()
-        {
-            GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, EnemyInfo.BaseColor, CurrentHealth / MaxHealth);
-        }
-
         public void SetTierIcon()
         {
             TierRenderer.color = EnemyInfo.TierColors.Evaluate((Tier % 7) / 7f);
@@ -118,8 +83,7 @@ namespace Enemy
             {
                 buff.IsAffected = buff.Duration >= Time.time;
 
-                if (buff.IsAffected)
-                    GetComponent<SpriteRenderer>().color = _invincibleColor;
+                GetComponent<SpriteRenderer>().color = buff.IsAffected ? _invincibleColor : Color.Lerp(Color.black, EnemyInfo.BaseColor, CurrentHealth / MaxHealth);
 
                 return 0f;
             };
@@ -178,7 +142,7 @@ namespace Enemy
             {
                 KnockBack(20f, -transform.up);
                 if (Buffs[BuffType.Invinciblity].IsAffected) return;
-                collision.transform.GetComponent<Player.PlayerMovement>().TakeDamage(1);
+                collision.transform.GetComponent<Player.PlayerBehaviour>().TakeDamage(1);
             }
         }
     }

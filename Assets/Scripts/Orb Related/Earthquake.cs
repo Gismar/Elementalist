@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using Elementalist.StatusEffect;
 
-namespace Orb
+namespace Elementalist.Orb
 {
     public class Earthquake : MonoBehaviour
     {

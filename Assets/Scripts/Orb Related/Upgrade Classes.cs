@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Orb
+namespace Elementalist.Orb
 {
     public interface IUpgradeable
     {

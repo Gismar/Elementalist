@@ -2,13 +2,10 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using BeardedManStudios.Forge.Networking.Unity;
-using BeardedManStudios.Forge.Networking.Generated;
-using BeardedManStudios.Forge.Networking;
 
-namespace Enemy
+namespace Elementalist.Enemy
 {
-    public class EnemySpawner : EnemySpawnerBehavior
+    public class EnemySpawner : MonoBehaviour
     {
         public List<Transform> Players { get; set; }
         private Tilemap _map;
@@ -38,19 +35,14 @@ namespace Enemy
             if (Players.Count == 0)
                 LookForPlayers();
 
-            if (!networkObject.IsServer)
-            {
-                return;
-            }
-
             _time = Mathf.Floor(Time.timeSinceLevelLoad / 10f) * 10f;
             _tier = Mathf.FloorToInt(_time / 10f);
 
             if (_spawnTimer < Time.timeSinceLevelLoad)
             {
-                SpawnEnemy(GetEnemyCount()-1);
+                SpawnEnemy(4);//GetEnemyCount()-1);
 
-                _spawnDelay = 1 / Mathf.Log(Mathf.Pow(_time + 10, 2), 100f);
+                _spawnDelay = 1f / Mathf.Log(Mathf.Pow(_time + 10, 2), 100f);
                 _spawnTimer = Time.timeSinceLevelLoad + _spawnDelay;
             }
 
@@ -64,10 +56,9 @@ namespace Enemy
         private int GetEnemyCount()
         {
             var count = 0;
-            var enemyNetworkObject = NetworkManager.Instance.EnemyNetworkingNetworkObject;
-            for (int i = 0; i < enemyNetworkObject.Length; i++)
+            for (int i = 0; i < _globalData.EnemyPrefabs.Length - 1; i++)
             {
-                var enemy = ((GameObject)enemyNetworkObject.GetValue(i)).GetComponent<EnemyBehaviour>();
+                var enemy = _globalData.EnemyPrefabs[i].GetComponent<EnemyBehaviour>();
 
                 if(_tier * 10f >= enemy.EnemyInfo.StartingSpawnTime) count++;
 
@@ -92,7 +83,9 @@ namespace Enemy
                 position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0);
             }
 
-            var enemy = NetworkManager.Instance.InstantiateEnemyNetworking(index, position, Quaternion.Euler(Vector2.up));
+            var enemy = Instantiate(_globalData.EnemyPrefabs[index], transform);
+            enemy.transform.position = position;
+
             var setup = new EnemySetup(
                 speed: Mathf.Log(_time + 100, 100F) * _multiplier,
                 target: Players[Random.Range(0, Players.Count)],
@@ -100,8 +93,7 @@ namespace Enemy
                 tier: _tier % 35,
                 globalData: _globalData
             );
-
-            enemy.transform.position = position;
+            
             enemy.GetComponent<EnemyBehaviour>().Setup(setup);
         }
 

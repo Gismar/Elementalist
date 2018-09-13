@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Enemy
+namespace Elementalist.Enemy
 {
     public class BasicEnemy : EnemyBehaviour
     {
@@ -33,7 +33,7 @@ namespace Enemy
             if (CurrentHealth <= 0)
             {
                 _globalData.AddPoints(_enemyInfo.PointValue);
-                networkObject.Destroy();
+                Destroy(transform.gameObject);
             }
         }
     }

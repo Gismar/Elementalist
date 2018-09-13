@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UI
+namespace Elementalist.UI
 {
     public class MainMenu : MonoBehaviour
     {

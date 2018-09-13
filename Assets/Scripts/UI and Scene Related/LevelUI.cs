@@ -2,11 +2,11 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-namespace UI
+namespace Elementalist.UI
 {
     public class LevelUI : MonoBehaviour
     {
-        public Player.PlayerMovement Player { get; set; }
+        public Player.PlayerBehaviour Player { get; set; }
 
         [SerializeField] private Text _health;
         [SerializeField] private Text _timer;
@@ -18,14 +18,14 @@ namespace UI
 
         void Update()
         {
-            if (Player._currentHealth == 0)
+            if (Player.CurrentHealth == 0)
             {
                 _globalData.SurvivalTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
                 ChangeScenes("Game Over");
             }
             _points.text = _globalData.Points.ToString("0 Ps");
             _timer.text = FormatTime();
-            _health.text = Player._currentHealth.ToString("HP: 0");
+            _health.text = Player.CurrentHealth.ToString("HP: 0");
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 _globalData.CheckScore();

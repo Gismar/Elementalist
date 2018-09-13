@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-namespace UI
+namespace Elementalist.UI
 {
     public class TutorialHandler : MonoBehaviour
     {

@@ -1,23 +1,53 @@
-﻿using BeardedManStudios.Forge.Networking.Generated;
-using BeardedManStudios.Forge.Networking.Unity;
-using UnityEngine;
-using Enemy;
-using System.Collections.Generic;
-using BeardedManStudios.Forge.Networking;
+﻿using UnityEngine;
+using Photon.Pun;
+using UnityEngine.SceneManagement;
 
-public class LevelManager : LevelManagerBehavior
-
+namespace Elementalist
 {
-	void Start () {
-        var player = NetworkManager.Instance.InstantiatePlayerNetworking().GetComponent<Player.PlayerMovement>();
+    public class LevelManager : MonoBehaviourPunCallbacks
+    {
+        public static LevelManager Instance;
 
-        if (networkObject.IsServer)
+        public override void OnLeftRoom()
         {
-            NetworkManager.Instance.InstantiateEnemySpawner().GetComponent<EnemySpawner>().Players = new List<Transform>();
+            SceneManager.LoadScene("Lobby");
         }
 
-        NetworkManager.Instance.EnemySpawnerNetworkObject[0]
-            .GetComponent<EnemySpawner>().LookForPlayers();
+        public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+        {
+            Debug.Log($"Player {newPlayer.NickName} entered");
 
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log($"Player is Master : {PhotonNetwork.IsMasterClient}");
+                LoadLevel();
+            }
+        }
+
+        public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+        {
+            Debug.Log($"Player {otherPlayer.NickName} has left");
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log($"Player is Master : {PhotonNetwork.IsMasterClient}");
+                LoadLevel();
+            }
+        }
+
+        public void LeaveRoom()
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+
+        private void LoadLevel()
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                Debug.LogError("Must be master client to load level");
+            }
+            Debug.Log($"Loading Level : {PhotonNetwork.CurrentRoom.PlayerCount}");
+            PhotonNetwork.LoadLevel($"Room For {PhotonNetwork.CurrentRoom.PlayerCount}");
+        }
     }
 }

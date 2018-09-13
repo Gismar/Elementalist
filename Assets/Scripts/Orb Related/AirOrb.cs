@@ -1,9 +1,9 @@
-﻿using Enemy;
+﻿using Elementalist.Enemy;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Orb
+namespace Elementalist.Orb
 {
     public class AirOrb : OrbBehaviour
     {

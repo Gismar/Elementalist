@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace Elementalist.UI
 {
     public class Upgrade : MonoBehaviour
     {

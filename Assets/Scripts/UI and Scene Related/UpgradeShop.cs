@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-namespace UI
+namespace Elementalist.UI
 {
     public class UpgradeShop : MonoBehaviour
     {

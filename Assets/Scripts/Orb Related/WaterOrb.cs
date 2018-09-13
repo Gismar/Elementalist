@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Enemy;
+using Elementalist.Enemy;
 
-namespace Orb
+namespace Elementalist.Orb
 {
     public class WaterOrb : OrbBehaviour
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Orb
+namespace Elementalist.Orb
 {
     public class LightningOrbBeam : MonoBehaviour
     {

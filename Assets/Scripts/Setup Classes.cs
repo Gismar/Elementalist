@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Orb
+namespace Elementalist.Orb
 {
     public class OrbSetup
     {
@@ -29,7 +29,7 @@ namespace Orb
     }
 }
 
-namespace Enemy
+namespace Elementalist.Enemy
 {
     public class EnemySetup
     {

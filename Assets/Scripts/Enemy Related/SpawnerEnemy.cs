@@ -1,8 +1,7 @@
-﻿using BeardedManStudios.Forge.Networking.Unity;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 
-namespace Enemy
+namespace Elementalist.Enemy
 {
     public class SpawnerEnemy : EnemyBehaviour
     {
@@ -42,21 +41,15 @@ namespace Enemy
         {
             for (int i = 0; i < _enemyInfo.SpawnAmount; i++)
             {
-                var enemyPrefabs = NetworkManager.Instance.EnemyNetworkingNetworkObject;
-
-                var temp = NetworkManager.Instance.InstantiateEnemyNetworking(
-                    System.Array.IndexOf(enemyPrefabs, enemyPrefabs.First(x => x.name == _offsprings.name)), 
-                    transform.position, 
-                    Quaternion.Euler(Vector2.up));
+                var temp = Instantiate(_offsprings);
 
                 var angle = Random.Range(-1f, 1f);
                 var setup = new EnemySetup(_speed, _player, MaxHealth, Tier, _globalData);
 
                 temp.GetComponent<EnemyBehaviour>().Setup(setup);
                 temp.GetComponent<EnemyBehaviour>().KnockBack(10f, new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized);
-                temp.GetComponent<EnemyBehaviour>().Debuffs[DebuffType.Knockback].IsAffected = true;
+                temp.GetComponent<EnemyBehaviour>().Debuffs[StatusEffect.DebuffType.Knockback].IsAffected = true;
             }
-            networkObject.Destroy();
             Destroy(transform.gameObject);
         }
     }
